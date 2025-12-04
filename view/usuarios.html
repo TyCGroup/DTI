@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios - TyC Group</title>
+    <script src="../js/favicon-loader.js"></script>
+    
+    <!-- Estilos base (OBLIGATORIO) -->
+    <link rel="stylesheet" href="../css/dashboard.css">
+    
+    <!-- Estilos específicos -->
+    <link rel="stylesheet" href="../css/usuarios.css">
+</head>
+<body>
+    <!-- ⭐ Sidebar y Header se insertan automáticamente -->
+    
+    <main class="main-content">
+        <div class="page-content" id="usuariosPage">
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <h1 class="toolbar-title">Gestión de Usuarios</h1>
+                    <p class="toolbar-subtitle">Administra los usuarios del sistema</p>
+                </div>
+                
+                <div class="toolbar-actions">
+                    <button class="btn btn-secondary" id="exportBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        <span>Exportar</span>
+                    </button>
+                    
+                    <!-- ⭐ NUEVO BOTÓN -->
+                    <button class="btn btn-success" id="importBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                        <span>Importar Excel</span>
+                    </button>
+                    
+                    <button class="btn btn-primary" id="addUserBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        <span>Agregar Empleado</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filtros -->
+            <div class="filters-container">
+                <div class="filter-group">
+                    <button class="filter-btn active" data-filter="all">Todos</button>
+                    <button class="filter-btn" data-filter="activo">Activos</button>
+                    <button class="filter-btn" data-filter="inactivo">Inactivos</button>
+                </div>
+                
+                <div class="search-filter">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    <input type="text" id="searchFilter" placeholder="Buscar usuarios...">
+                </div>
+            </div>
+
+            <!-- Contenedor de la tabla -->
+            <div id="tableContainer"></div>
+        </div>
+    </main>
+
+    <!-- Modal Agregar/Editar Usuario -->
+    <div class="modal" id="userModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Agregar Usuario</h2>
+                <button class="close-btn" id="closeModalBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="userForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="nombre">
+                                Nombre <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                class="form-input" 
+                                id="nombre" 
+                                name="nombre"
+                                placeholder="Ingresa el nombre"
+                                required
+                            >
+                            <span class="form-error" id="nombreError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="apellido">
+                                Apellido <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                class="form-input" 
+                                id="apellido" 
+                                name="apellido"
+                                placeholder="Ingresa el apellido"
+                                required
+                            >
+                            <span class="form-error" id="apellidoError"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="area">
+                                Área <span class="required">*</span>
+                            </label>
+                            <select class="form-select" id="area" name="area" required>
+                                <option value="">Selecciona un área</option>
+                                <!-- Se llenarán dinámicamente -->
+                            </select>
+                            <span class="form-error" id="areaError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="puesto">
+                                Puesto <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                class="form-input" 
+                                id="puesto" 
+                                name="puesto"
+                                placeholder="Ingresa el puesto"
+                                required
+                            >
+                            <span class="form-error" id="puestoError"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="correoUsuario">
+                            Correo Electrónico <span class="required">*</span>
+                        </label>
+                        <div class="email-input-group">
+                            <input 
+                                type="text" 
+                                class="form-input email-username" 
+                                id="correoUsuario" 
+                                name="correoUsuario"
+                                placeholder="usuario"
+                                required
+                            >
+                            <span class="email-domain">@tycgroup.com</span>
+                        </div>
+                        <span class="form-hint">Solo ingresa el nombre de usuario, el dominio se agregará automáticamente</span>
+                        <span class="form-error" id="correoError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Estado <span class="required">*</span>
+                        </label>
+                        <div class="toggle-group">
+                            <label class="toggle-label">
+                                <input 
+                                    type="checkbox" 
+                                    class="toggle-checkbox" 
+                                    id="estado" 
+                                    name="estado"
+                                    checked
+                                >
+                                <span class="toggle-switch"></span>
+                                <span class="toggle-text">Activo</span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelBtn">Cancelar</button>
+                <button class="btn btn-primary" id="saveBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ⭐ Modales y Scroll Button se insertan automáticamente -->
+    <div class="modal" id="importModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">Importar Empleados desde Excel</h2>
+                <button class="close-btn" id="closeImportModalBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="import-instructions">
+                    <h4>📋 Formato del archivo Excel:</h4>
+                    <ul>
+                        <li><strong>Columna A:</strong> Estado (activo/inactivo)</li>
+                        <li><strong>Columna B:</strong> Nombre</li>
+                        <li><strong>Columna C:</strong> Apellido</li>
+                        <li><strong>Columna D:</strong> Área</li>
+                        <li><strong>Columna E:</strong> Puesto</li>
+                        <li><strong>Columna F:</strong> Correo (usuario@tycgroup.com o solo usuario)</li>
+                    </ul>
+                    <p class="import-note">⚠️ Los datos deben comenzar desde la fila 2 (la fila 1 es el encabezado)</p>
+                </div>
+
+                <div class="file-upload-area" id="fileUploadArea">
+                    <input type="file" id="excelFileInput" accept=".xlsx,.xls" style="display: none;">
+                    <label for="excelFileInput" class="file-upload-label">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="12" y1="18" x2="12" y2="12"/>
+                            <line x1="9" y1="15" x2="15" y2="15"/>
+                        </svg>
+                        <span>Haz clic o arrastra un archivo Excel aquí</span>
+                        <small>Formatos soportados: .xlsx, .xls</small>
+                    </label>
+                </div>
+
+                <div id="importPreview" style="display: none;">
+                    <h4>Vista previa de datos:</h4>
+                    <div id="previewContent"></div>
+                    <div class="import-summary">
+                        <span id="validCount" class="badge-success">0 válidos</span>
+                        <span id="errorCount" class="badge-error">0 errores</span>
+                    </div>
+                </div>
+
+                <div id="importProgress" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <p id="progressText">Procesando...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelImportBtn">Cancelar</button>
+                <button class="btn btn-primary" id="confirmImportBtn" style="display: none;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Importar <span id="importCount">0</span> empleados
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS (ORDEN IMPORTANTE) -->
+     <!-- Librería para leer Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="../js/auth-module.js"></script>
+    <script src="../js/constants.js"></script>
+    <script src="../js/shared-components.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/form-validator.js"></script>
+    <script src="../js/firebase-helpers.js"></script>
+    <script src="../js/dashboard.js"></script>
+    
+    <!-- Módulo específico -->
+    <script src="../js/usuarios.js"></script>
+    
+    <!-- ⭐ LÍNEA MÁGICA: Inserta todo el layout automáticamente -->
+    <script>
+        SharedComponents.initializePage('usuarios');
+    </script>
+</body>
+</html>

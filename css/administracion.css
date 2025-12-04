@@ -1,0 +1,365 @@
+/* ======================================
+   ESTILOS ESPECÍFICOS - ADMINISTRACIÓN
+   ====================================== */
+
+/* Grid de Paneles de Administración */
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    margin-top: 32px;
+}
+
+/* Panel de Administración */
+.admin-panel {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%);
+    border: 2px solid rgba(0, 212, 255, 0.2);
+    border-radius: 16px;
+    padding: 32px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    min-height: 200px;
+}
+
+.admin-panel::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.admin-panel:hover {
+    transform: translateY(-8px);
+    border-color: rgba(0, 212, 255, 0.5);
+    box-shadow: 0 16px 40px rgba(0, 212, 255, 0.2),
+                0 0 40px rgba(0, 212, 255, 0.1);
+}
+
+.admin-panel:hover::before {
+    opacity: 1;
+}
+
+.admin-panel:active {
+    transform: translateY(-4px);
+}
+
+/* Contenedor del Icono */
+.admin-panel-icon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2) 0%, rgba(0, 255, 136, 0.2) 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.admin-panel:hover .admin-panel-icon {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.3) 0%, rgba(0, 255, 136, 0.3) 100%);
+    transform: scale(1.1) rotate(5deg);
+}
+
+.admin-panel-icon svg {
+    width: 32px;
+    height: 32px;
+    stroke: var(--primary-color, #00d4ff);
+    transition: all 0.3s ease;
+}
+
+.admin-panel:hover .admin-panel-icon svg {
+    stroke: #00ff88;
+    filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));
+}
+
+/* Contenido del Panel */
+.admin-panel-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+.admin-panel-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    transition: color 0.3s ease;
+}
+
+.admin-panel:hover .admin-panel-title {
+    color: var(--primary-color, #00d4ff);
+}
+
+.admin-panel-description {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Badge de Estado/Contador */
+.admin-panel-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(0, 212, 255, 0.2);
+    color: var(--primary-color, #00d4ff);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+.admin-panel:hover .admin-panel-badge {
+    background: rgba(0, 255, 136, 0.2);
+    color: #00ff88;
+}
+
+/* Flecha Indicadora */
+.admin-panel-arrow {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 24px;
+    height: 24px;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.admin-panel:hover .admin-panel-arrow {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.admin-panel-arrow svg {
+    width: 100%;
+    height: 100%;
+    stroke: var(--primary-color, #00d4ff);
+}
+
+/* Variantes de Color para Paneles */
+.admin-panel.panel-users {
+    border-color: rgba(0, 212, 255, 0.2);
+}
+
+.admin-panel.panel-users:hover {
+    border-color: rgba(0, 212, 255, 0.5);
+    box-shadow: 0 16px 40px rgba(0, 212, 255, 0.2);
+}
+
+.admin-panel.panel-areas {
+    border-color: rgba(0, 255, 136, 0.2);
+}
+
+.admin-panel.panel-areas:hover {
+    border-color: rgba(0, 255, 136, 0.5);
+    box-shadow: 0 16px 40px rgba(0, 255, 136, 0.2);
+}
+
+.admin-panel.panel-roles {
+    border-color: rgba(255, 184, 0, 0.2);
+}
+
+.admin-panel.panel-roles:hover {
+    border-color: rgba(255, 184, 0, 0.5);
+    box-shadow: 0 16px 40px rgba(255, 184, 0, 0.2);
+}
+
+.admin-panel.panel-settings {
+    border-color: rgba(138, 43, 226, 0.2);
+}
+
+.admin-panel.panel-settings:hover {
+    border-color: rgba(138, 43, 226, 0.5);
+    box-shadow: 0 16px 40px rgba(138, 43, 226, 0.2);
+}
+
+/* Estado Deshabilitado */
+.admin-panel.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.admin-panel.disabled::after {
+    content: 'Próximamente';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: var(--primary-color, #00d4ff);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    z-index: 10;
+}
+
+/* Loading State */
+.admin-panel.loading {
+    pointer-events: none;
+}
+
+.admin-panel.loading .admin-panel-icon {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Empty State */
+.admin-empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--text-secondary);
+}
+
+.admin-empty-state svg {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 24px;
+    opacity: 0.3;
+}
+
+.admin-empty-state h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.admin-empty-state p {
+    font-size: 14px;
+    margin-bottom: 24px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .admin-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+    }
+
+    .admin-panel {
+        padding: 24px;
+        min-height: 180px;
+    }
+
+    .admin-panel-icon {
+        width: 56px;
+        height: 56px;
+    }
+
+    .admin-panel-icon svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .admin-panel-title {
+        font-size: 18px;
+    }
+
+    .admin-panel-description {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .admin-panel {
+        padding: 20px;
+        min-height: 160px;
+    }
+
+    .admin-panel-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .admin-panel-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .admin-panel:hover {
+        transform: translateY(-4px);
+    }
+
+    .admin-panel-badge {
+        font-size: 11px;
+        padding: 4px 10px;
+    }
+}
+
+/* Animación de Entrada */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.admin-panel {
+    animation: slideInUp 0.5s ease-out forwards;
+}
+
+.admin-panel:nth-child(1) { animation-delay: 0.1s; }
+.admin-panel:nth-child(2) { animation-delay: 0.2s; }
+.admin-panel:nth-child(3) { animation-delay: 0.3s; }
+.admin-panel:nth-child(4) { animation-delay: 0.4s; }
+.admin-panel:nth-child(5) { animation-delay: 0.5s; }
+.admin-panel:nth-child(6) { animation-delay: 0.6s; }
+
+/* Tema Claro */
+body[data-theme="light"] .admin-panel {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(0, 255, 136, 0.03) 100%);
+    border-color: rgba(0, 212, 255, 0.15);
+}
+
+body[data-theme="light"] .admin-panel:hover {
+    border-color: rgba(0, 212, 255, 0.4);
+    box-shadow: 0 16px 40px rgba(0, 212, 255, 0.15);
+}
+
+body[data-theme="light"] .admin-panel-icon {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(0, 255, 136, 0.15) 100%);
+}
+
+body[data-theme="light"] .admin-panel:hover .admin-panel-icon {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.25) 0%, rgba(0, 255, 136, 0.25) 100%);
+}

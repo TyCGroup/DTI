@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TyC Group - Portal de Acceso</title>
+    <script src="../js/favicon-loader.js"></script> 
+    <link rel="stylesheet" href="css/login.css">  
+</head>
+<body>
+    <!-- Partículas de fondo -->
+    <div class="particles" id="particles"></div>
+ 
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-container">
+            <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="50,10 90,30 90,70 50,90 10,70 10,30" stroke="currentColor" stroke-width="3" fill="none"/>
+                <circle cx="50" cy="50" r="15" fill="currentColor"/>
+                <path d="M35,35 L65,65 M65,35 L35,65" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <div class="brand-text">T&C Group - Tecnología e Innovación</div>
+        </div>
+    </header>
+
+    <!-- Cinta de idiomas -->
+    <div class="language-banner">
+        <div class="language-scroll">
+            Welcome • Bienvenido • Bienvenue • Willkommen • Benvenuto • ようこそ • 欢迎 • مرحبا • Добро пожаловать • Bem-vindo • Welcome • Bienvenido • Bienvenue • Willkommen • Benvenuto • ようこそ • 欢迎 • مرحبا • Добро пожаловать • Bem-vindo
+        </div>
+    </div>
+
+    <!-- Contenedor principal -->
+    <div class="main-container">
+        <!-- Animación de ojos -->
+        <div class="eyes-container">
+            <div class="eyes">
+                <div class="eye" id="leftEye">
+                    <div class="iris"></div>
+                    <div class="pupil" id="leftPupil"></div>
+                    <div class="eyelid"></div>
+                </div>
+                <div class="eye" id="rightEye">
+                    <div class="iris"></div>
+                    <div class="pupil" id="rightPupil"></div>
+                    <div class="eyelid"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario de login -->
+        <div class="login-container">
+            <h2 class="login-title">
+                Infrastructure<br>
+                <p>Tech</p>
+                <p>Zone for Enterprise</p>
+                <p>Liaison</p>
+            </h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="Ingresa tu email"
+                        required
+                    >
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="password">Contraseña</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="Ingresa tu contraseña"
+                        required
+                    >
+                </div>
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <span id="loginBtnText">Iniciar Sesión</span>
+                    <div class="loading-spinner" id="loadingSpinner" style="display: none;"></div>
+                </button>
+                <a href="#" class="reset-link" id="resetPassword">¿Olvidaste tu contraseña?</a>
+            </form>
+            
+            <!-- Información de usuarios de prueba -->
+            <div class="test-users">
+                <h4>Usuarios de Prueba:</h4>
+                <div class="test-user">
+                    <strong>SuperAdmin:</strong> admin@tyc.com / admin123
+                </div>
+                <div class="test-user">
+                    <strong>Becario:</strong> becario@tyc.com / becario123
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toasts -->
+    <div class="welcome-toast" id="welcomeToast">
+        <div id="welcomeMessage"></div>
+    </div>
+
+    <div class="error-toast" id="errorToast">
+        <div id="errorMessage"></div>
+    </div>
+
+        <!-- Firebase v9 Compat -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>  
+    <script src="firebase-config.js"></script>
+    <script src="js/login.js"></script> 
+</body>
+</html>

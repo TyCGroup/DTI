@@ -1,0 +1,749 @@
+/* areas.css - Estilos específicos para Gestión de Áreas */
+
+/* ==========================================
+   TOOLBAR STYLES
+   ========================================== */
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1.5rem 2rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar-left {
+    flex: 1;
+    min-width: 200px;
+}
+
+.toolbar-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 0.25rem 0;
+}
+
+.toolbar-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    opacity: 0.7;
+    margin: 0;
+}
+
+/* Filtros */
+.toolbar-filters {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 0.7rem 1.5rem;
+    border: 2px solid rgba(0, 212, 255, 0.2);
+    background: rgba(0, 212, 255, 0.05);
+    color: var(--text-secondary);
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.filter-btn:hover {
+    background: rgba(0, 212, 255, 0.15);
+    border-color: rgba(0, 212, 255, 0.4);
+    color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #0f172a;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 212, 255, 0.4);
+}
+
+/* Acciones */
+.toolbar-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.toolbar-actions .btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    padding: 0.8rem 1.5rem;
+}
+
+.toolbar-actions .btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* ==========================================
+   TABLE STYLES
+   ========================================== */
+
+.table-container {
+    background: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table thead {
+    background: rgba(0, 212, 255, 0.1);
+}
+
+.data-table th {
+    padding: 1.2rem 1.5rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid rgba(0, 212, 255, 0.2);
+}
+
+.data-table tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.data-table tbody tr:hover {
+    background: rgba(0, 212, 255, 0.05);
+}
+
+.data-table td {
+    padding: 1.2rem 1.5rem;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.data-table .actions-cell {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.data-table .action-btn {
+    padding: 0.5rem;
+    background: rgba(0, 212, 255, 0.1);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.data-table .action-btn:hover {
+    background: rgba(0, 212, 255, 0.2);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.data-table .action-btn.danger {
+    background: rgba(255, 71, 87, 0.1);
+    border-color: rgba(255, 71, 87, 0.2);
+    color: var(--danger-color);
+}
+
+.data-table .action-btn.danger:hover {
+    background: rgba(255, 71, 87, 0.2);
+    border-color: var(--danger-color);
+}
+
+.data-table .action-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Badge en tabla */
+.data-table .badge {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.data-table .badge.success {
+    background: rgba(0, 255, 136, 0.2);
+    color: var(--success-color);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+}
+
+.data-table .badge.danger {
+    background: rgba(255, 71, 87, 0.2);
+    color: var(--danger-color);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+}
+
+/* ==========================================
+   MODAL STYLES - MEJORADO
+   ========================================== */
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+}
+
+.modal-container {
+    position: relative;
+    background: var(--card-bg);
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: modalSlideIn 0.3s ease;
+    z-index: 10000;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    border-bottom: 2px solid rgba(0, 212, 255, 0.2);
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.close-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 71, 87, 0.1);
+    border: 1px solid rgba(255, 71, 87, 0.2);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--danger-color);
+}
+
+.close-btn:hover {
+    background: rgba(255, 71, 87, 0.2);
+    transform: rotate(90deg);
+}
+
+.close-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.modal-body {
+    padding: 2rem;
+    background: var(--card-bg);
+}
+
+.modal-footer {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--card-bg);
+    justify-content: flex-end;
+}
+
+/* ==========================================
+   FORM STYLES - MEJORADO
+   ========================================== */
+
+#areaForm .form-group {
+    margin-bottom: 1.5rem;
+}
+
+#areaForm .form-label {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+#areaForm .form-input,
+#areaForm .form-select {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+#areaForm .form-input:focus,
+#areaForm .form-select:focus {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+}
+
+#areaForm .form-input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.5;
+}
+
+#areaForm .form-input.error {
+    border-color: var(--danger-color);
+}
+
+#areaForm textarea.form-input {
+    resize: vertical;
+    min-height: 100px;
+    font-family: inherit;
+}
+
+#areaForm .form-error {
+    display: block;
+    margin-top: 0.5rem;
+    color: var(--danger-color);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+#areaForm .form-hint {
+    display: block;
+    margin-top: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+/* ==========================================
+   EMPTY STATE
+   ========================================== */
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    animation: fadeIn 0.5s ease;
+}
+
+.empty-icon {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 2rem;
+    opacity: 0.3;
+}
+
+.empty-icon svg {
+    width: 100%;
+    height: 100%;
+    stroke: var(--primary-color);
+}
+
+.empty-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.empty-description {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    opacity: 0.7;
+}
+
+/* ==========================================
+   BUTTONS - MEJORADO Y VISIBLE
+   ========================================== */
+
+.btn {
+    padding: 0.8rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: #0f172a !important; /* Negro para contraste */
+    border: 2px solid var(--primary-color);
+}
+
+.btn-primary:hover {
+    background: #00e5ff;
+    border-color: #00e5ff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 212, 255, 0.4);
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+.btn svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+}
+
+/* Específico para el botón de guardar en el modal */
+.modal-footer .btn-primary {
+    background: var(--primary-color);
+    color: #0f172a !important;
+    font-weight: 700;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.modal-footer .btn-primary svg {
+    stroke: #0f172a;
+}
+
+.modal-footer .btn-secondary {
+    background: transparent;
+    color: var(--text-primary);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    min-width: 120px;
+    justify-content: center;
+}
+
+/* Estados de botones */
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.btn:disabled:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 768px) {
+    .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .toolbar-left {
+        order: 1;
+    }
+
+    .toolbar-filters {
+        order: 2;
+        justify-content: center;
+    }
+
+    .toolbar-actions {
+        order: 3;
+        justify-content: center;
+    }
+
+    .toolbar-actions .btn {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .data-table {
+        font-size: 0.85rem;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 0.8rem 1rem;
+    }
+
+    .modal-container {
+        width: 95%;
+        max-height: 95vh;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+}
+
+/* ==========================================
+   THEME LIGHT - SOPORTE
+   ========================================== */
+
+body.light-theme .toolbar {
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme .filter-btn {
+    border-color: rgba(0, 212, 255, 0.3);
+    color: #64748b;
+}
+
+body.light-theme .filter-btn:hover {
+    background: rgba(0, 212, 255, 0.15);
+}
+
+body.light-theme .filter-btn.active {
+    background: var(--primary-color);
+    color: #ffffff;
+}
+
+body.light-theme .table-container {
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme .data-table tbody tr:hover {
+    background: rgba(0, 212, 255, 0.05);
+}
+
+body.light-theme .modal-container {
+    background: #ffffff;
+}
+
+body.light-theme .modal-header {
+    border-bottom-color: rgba(0, 212, 255, 0.2);
+}
+
+body.light-theme #areaForm .form-input,
+body.light-theme #areaForm .form-select {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    color: #1e293b;
+}
+
+body.light-theme #areaForm .form-input:focus,
+body.light-theme #areaForm .form-select:focus {
+    background: #ffffff;
+    border-color: var(--primary-color);
+}
+
+body.light-theme .empty-state {
+    background: #ffffff;
+}
+/* ==========================================
+   ACTIONS COLUMN - ESPECÍFICO
+   ========================================== */
+
+.data-table .actions-column {
+    width: 120px;
+    text-align: center;
+}
+
+.data-table .actions-cell {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.data-table .action-btn {
+    padding: 0.5rem;
+    background: rgba(0, 212, 255, 0.1);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+}
+
+.data-table .action-btn:hover {
+    background: rgba(0, 212, 255, 0.2);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 212, 255, 0.3);
+}
+
+.data-table .action-btn.danger {
+    background: rgba(255, 71, 87, 0.1);
+    border-color: rgba(255, 71, 87, 0.2);
+    color: var(--danger-color);
+}
+
+.data-table .action-btn.danger:hover {
+    background: rgba(255, 71, 87, 0.2);
+    border-color: var(--danger-color);
+    box-shadow: 0 4px 8px rgba(255, 71, 87, 0.3);
+}
+
+.data-table .action-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.data-table .action-btn:active {
+    transform: scale(0.95);
+}
+
+/* Tooltip en hover */
+.data-table .action-btn::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-5px);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.data-table .action-btn:hover::after {
+    opacity: 1;
+}
+/* Botones en tema claro */
+body.light-theme .btn-primary {
+    background: var(--primary-color);
+    color: #0f172a !important;
+    border-color: var(--primary-color);
+}
+
+body.light-theme .btn-primary:hover {
+    background: #00e5ff;
+}
+
+body.light-theme .btn-primary svg {
+    stroke: #0f172a;
+}
+
+body.light-theme .btn-secondary {
+    background: #f1f5f9;
+    color: #1e293b;
+    border-color: #cbd5e1;
+}
+
+body.light-theme .btn-secondary:hover {
+    background: #e2e8f0;
+    border-color: #94a3b8;
+}
+
+body.light-theme .modal-footer .btn-primary {
+    background: var(--primary-color);
+    color: #0f172a !important;
+}
+/* ==========================================
+   MAYÚSCULAS AUTOMÁTICAS
+   ========================================== */
+
+#areaForm #nombre,
+#areaForm #descripcion {
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+#areaForm #nombre::placeholder,
+#areaForm #descripcion::placeholder {
+    text-transform: none;
+    font-weight: 400;
+    letter-spacing: normal;
+}
+
+/* Descripción con peso normal */
+#areaForm #descripcion {
+    font-weight: 500;
+}

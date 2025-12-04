@@ -1,0 +1,1026 @@
+/* ============================================
+   USUARIOS.CSS - TyC Group Dashboard v2.0
+   Solo estilos específicos de la página de usuarios
+   ============================================ */
+
+/* ==========================================
+   SCOPE: Solo afectar elementos dentro de #usuariosPage
+   ========================================== */
+
+/* ==========================================
+   TOOLBAR ESPECÍFICO
+   ========================================== */
+
+#usuariosPage .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 16px;
+    border: 1px solid rgba(0, 212, 255, 0.15);
+}
+
+#usuariosPage .toolbar-left {
+    flex: 1;
+}
+
+#usuariosPage .toolbar-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 0.5rem 0;
+}
+
+#usuariosPage .toolbar-subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+#usuariosPage .toolbar-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+#usuariosPage .toolbar-actions button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+#usuariosPage .toolbar-actions button svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* ==========================================
+   FILTROS
+   ========================================== */
+
+#usuariosPage .filters-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 1.25rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 212, 255, 0.15);
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+#usuariosPage .filter-group {
+    display: flex;
+    gap: 0.75rem;
+}
+
+#usuariosPage .filter-btn {
+    padding: 0.6rem 1.2rem;
+    background: transparent;
+    border: 2px solid rgba(0, 212, 255, 0.2);
+    color: var(--text-primary);
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+#usuariosPage .filter-btn:hover {
+    border-color: var(--primary-color);
+    background: rgba(0, 212, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+#usuariosPage .filter-btn.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #0f172a;
+    box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+}
+
+#usuariosPage .search-filter {
+    position: relative;
+    flex: 1;
+    min-width: 250px;
+    max-width: 400px;
+}
+
+#usuariosPage .search-filter svg {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    pointer-events: none;
+}
+
+#usuariosPage .search-filter input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 3rem;
+    border: 2px solid rgba(0, 212, 255, 0.2);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border-radius: 25px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+#usuariosPage .search-filter input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: rgba(0, 212, 255, 0.05);
+    box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.1);
+}
+
+/* ==========================================
+   TABLA
+   ========================================== */
+
+#usuariosPage .table-container {
+    background: var(--card-bg);
+    border-radius: 16px;
+    border: 1px solid rgba(0, 212, 255, 0.15);
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+#usuariosPage .data-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+#usuariosPage .data-table thead {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(0, 212, 255, 0.05));
+}
+
+#usuariosPage .data-table th {
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--primary-color);
+    border-bottom: 2px solid rgba(0, 212, 255, 0.2);
+}
+
+#usuariosPage .data-table tbody tr {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+#usuariosPage .data-table tbody tr:hover {
+    background: rgba(0, 212, 255, 0.05);
+    transform: scale(1.002);
+}
+
+#usuariosPage .data-table td {
+    padding: 1.25rem 1.5rem;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+#usuariosPage .actions-column {
+    width: 120px;
+    text-align: center;
+}
+
+#usuariosPage .actions-cell {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+#usuariosPage .action-btn {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    background: rgba(0, 212, 255, 0.1);
+    color: var(--primary-color);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#usuariosPage .action-btn:hover {
+    background: var(--primary-color);
+    color: #0f172a;
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+}
+
+#usuariosPage .action-btn.danger {
+    border-color: rgba(255, 71, 87, 0.3);
+    background: rgba(255, 71, 87, 0.1);
+    color: var(--danger-color);
+}
+
+#usuariosPage .action-btn.danger:hover {
+    background: var(--danger-color);
+    color: white;
+    border-color: var(--danger-color);
+    box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
+}
+
+#usuariosPage .status-badge {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#usuariosPage .status-badge.activo {
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 255, 136, 0.1));
+    color: var(--success-color);
+    border: 2px solid rgba(0, 255, 136, 0.3);
+}
+
+#usuariosPage .status-badge.inactivo {
+    background: linear-gradient(135deg, rgba(255, 71, 87, 0.2), rgba(255, 71, 87, 0.1));
+    color: var(--danger-color);
+    border: 2px solid rgba(255, 71, 87, 0.3);
+}
+
+/* ==========================================
+   MODAL - Solo para #userModal
+   ========================================== */
+
+#userModal.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+}
+
+#userModal.modal.show {
+    display: flex;
+}
+
+#userModal .modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+}
+
+#userModal .modal-container {
+    position: relative;
+    width: 90%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: var(--bg-secondary);
+    border-radius: 20px;
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.3s ease;
+}
+
+#userModal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+    border-bottom: 2px solid rgba(0, 212, 255, 0.2);
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), transparent);
+}
+
+#userModal .modal-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+#userModal .close-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: rgba(255, 71, 87, 0.1);
+    border: 2px solid rgba(255, 71, 87, 0.3);
+    color: var(--danger-color);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#userModal .close-btn:hover {
+    background: var(--danger-color);
+    color: white;
+    transform: rotate(90deg);
+}
+
+#userModal .modal-body {
+    padding: 2rem;
+    background: var(--card-bg);
+}
+
+#userModal .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    border-top: 2px solid rgba(0, 212, 255, 0.2);
+    background: linear-gradient(transparent, rgba(0, 212, 255, 0.05));
+}
+
+/* ==========================================
+   FORMULARIO - Solo dentro de #userModal
+   ========================================== */
+
+#userModal .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+#userModal .form-group {
+    margin-bottom: 1.5rem;
+}
+
+#userModal .form-label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+#userModal .required {
+    color: var(--danger-color);
+    font-weight: 700;
+    margin-left: 4px;
+}
+
+#userModal .form-input,
+#userModal .form-select {
+    width: 100%;
+    padding: 0.9rem 1.2rem;
+    background: var(--bg-primary);
+    border: 2px solid rgba(0, 212, 255, 0.25);
+    color: var(--text-primary);
+    border-radius: 12px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+#userModal .form-input:focus,
+#userModal .form-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: rgba(0, 212, 255, 0.05);
+    box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.1);
+}
+
+#userModal .form-hint {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+}
+
+#userModal .form-error {
+    display: block;
+    color: var(--danger-color);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+#userModal .email-input-group {
+    display: flex;
+    align-items: center;
+    border: 2px solid rgba(0, 212, 255, 0.25);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg-primary);
+    transition: all 0.3s ease;
+}
+
+#userModal .email-input-group:focus-within {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.1);
+}
+
+#userModal .email-username {
+    flex: 1;
+    border: none !important;
+    padding: 0.9rem 1.2rem;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+#userModal .email-username:focus {
+    outline: none;
+}
+
+#userModal .email-domain {
+    padding: 0.9rem 1.2rem;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 212, 255, 0.1));
+    color: var(--primary-color);
+    font-weight: 700;
+    border-left: 2px solid rgba(0, 212, 255, 0.3);
+    white-space: nowrap;
+    font-size: 0.95rem;
+}
+
+#userModal .toggle-group {
+    margin-top: 0.75rem;
+}
+
+#userModal .toggle-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+#userModal .toggle-checkbox {
+    display: none;
+}
+
+#userModal .toggle-switch {
+    position: relative;
+    width: 60px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    margin-right: 1rem;
+}
+
+#userModal .toggle-switch::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    background: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+#userModal .toggle-checkbox:checked + .toggle-switch {
+    background: var(--success-color);
+    border-color: var(--success-color);
+}
+
+#userModal .toggle-checkbox:checked + .toggle-switch::after {
+    transform: translateX(28px);
+}
+
+#userModal .toggle-text {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+#userModal .toggle-checkbox:checked ~ .toggle-text {
+    color: var(--success-color);
+}
+
+/* Botones del modal */
+#userModal .btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#userModal .btn-primary {
+    background: linear-gradient(135deg, #00d4ff, #0099cc);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+}
+
+#userModal .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+}
+
+#userModal .btn-secondary {
+    background: rgba(0, 212, 255, 0.1);
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    color: var(--primary-color);
+}
+
+#userModal .btn-secondary:hover {
+    background: rgba(0, 212, 255, 0.2);
+    border-color: var(--primary-color);
+}
+
+/* ==========================================
+   ANIMACIONES
+   ========================================== */
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 1024px) {
+    #usuariosPage .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    #userModal .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    #usuariosPage .filters-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    #usuariosPage .search-filter {
+        max-width: 100%;
+    }
+    
+    #usuariosPage .toolbar-actions {
+        flex-direction: column;
+    }
+}
+
+/* ==========================================
+   IMPORTACIÓN MASIVA
+   ========================================== */
+
+#usuariosPage .btn-success {
+    background: linear-gradient(135deg, #00ff88, #00cc6a);
+    color: #0f172a;
+    box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+}
+
+#usuariosPage .btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 255, 136, 0.4);
+}
+
+/* Modal de importación */
+#importModal.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+}
+
+#importModal.modal.show {
+    display: flex;
+}
+
+#importModal .modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+}
+
+#importModal .modal-container {
+    position: relative;
+    width: 90%;
+    max-width: 900px;
+    max-height: 85vh; /* ⭐ Reducido para dar espacio */
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-secondary);
+    border-radius: 20px;
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.3s ease;
+    overflow: hidden; /* ⭐ Importante */
+}
+
+#importModal .modal-header {
+    flex-shrink: 0; /* ⭐ No se encoge */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 2px solid rgba(0, 212, 255, 0.2);
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), transparent);
+}
+
+#importModal .modal-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+#importModal .close-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: rgba(255, 71, 87, 0.1);
+    border: 2px solid rgba(255, 71, 87, 0.3);
+    color: var(--danger-color);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#importModal .close-btn:hover {
+    background: var(--danger-color);
+    color: white;
+    transform: rotate(90deg);
+}
+
+#importModal .modal-body {
+    flex: 1; /* ⭐ Ocupa el espacio disponible */
+    overflow-y: auto; /* ⭐ Scroll interno */
+    padding: 2rem;
+    background: var(--card-bg);
+}
+
+/* Estilos del scrollbar para el modal-body */
+#importModal .modal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+#importModal .modal-body::-webkit-scrollbar-track {
+    background: rgba(0, 212, 255, 0.05);
+    border-radius: 10px;
+}
+
+#importModal .modal-body::-webkit-scrollbar-thumb {
+    background: rgba(0, 212, 255, 0.3);
+    border-radius: 10px;
+}
+
+#importModal .modal-body::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+}
+
+#importModal .modal-footer {
+    flex-shrink: 0; /* ⭐ No se encoge */
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    border-top: 2px solid rgba(0, 212, 255, 0.2);
+    background: linear-gradient(transparent, rgba(0, 212, 255, 0.05));
+}
+
+/* Instrucciones */
+#importModal .import-instructions {
+    background: rgba(0, 212, 255, 0.05);
+    border: 2px solid rgba(0, 212, 255, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+#importModal .import-instructions h4 {
+    color: var(--primary-color);
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+}
+
+#importModal .import-instructions ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+#importModal .import-instructions li {
+    padding: 0.5rem 0;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+#importModal .import-note {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: rgba(255, 184, 0, 0.1);
+    border-left: 4px solid var(--warning-color);
+    color: var(--text-primary);
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+/* Área de subida de archivos */
+.file-upload-area {
+    border: 3px dashed rgba(0, 212, 255, 0.3);
+    border-radius: 16px;
+    padding: 2.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    background: rgba(0, 212, 255, 0.02);
+    margin-bottom: 1.5rem;
+}
+
+.file-upload-area:hover {
+    border-color: var(--primary-color);
+    background: rgba(0, 212, 255, 0.05);
+}
+
+.file-upload-area.dragover {
+    border-color: var(--primary-color);
+    background: rgba(0, 212, 255, 0.1);
+    transform: scale(1.02);
+}
+
+.file-upload-label {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    color: var(--text-primary);
+}
+
+.file-upload-label svg {
+    color: var(--primary-color);
+}
+
+.file-upload-label span {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.file-upload-label small {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Vista previa */
+#importPreview {
+    margin-top: 1.5rem;
+}
+
+#importPreview h4 {
+    color: var(--primary-color);
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+}
+
+#previewContent {
+    max-height: 250px; /* ⭐ Altura fija para preview */
+    overflow-y: auto;
+    background: var(--bg-primary);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Scrollbar para preview */
+#previewContent::-webkit-scrollbar {
+    width: 6px;
+}
+
+#previewContent::-webkit-scrollbar-track {
+    background: rgba(0, 212, 255, 0.05);
+}
+
+#previewContent::-webkit-scrollbar-thumb {
+    background: rgba(0, 212, 255, 0.3);
+    border-radius: 3px;
+}
+
+.preview-row {
+    padding: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: grid;
+    grid-template-columns: 80px 1.2fr 1.2fr 1.5fr 1.5fr 2fr 60px; /* ⭐ ACTUALIZADO: 7 columnas */
+    gap: 0.75rem;
+    font-size: 0.85rem;
+    align-items: center;
+}
+
+.preview-row:last-child {
+    border-bottom: none;
+}
+
+.preview-row.error {
+    background: rgba(255, 71, 87, 0.1);
+    border-left: 4px solid var(--danger-color);
+    padding-left: calc(0.75rem - 4px);
+}
+
+.preview-row.valid {
+    background: rgba(0, 255, 136, 0.05);
+}
+
+.preview-row strong {
+    color: var(--primary-color);
+    font-size: 0.8rem;
+}
+
+.preview-row span {
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Summary badges */
+.import-summary {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.badge-success {
+    background: rgba(0, 255, 136, 0.2);
+    color: var(--success-color);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    border: 2px solid rgba(0, 255, 136, 0.3);
+}
+
+.badge-error {
+    background: rgba(255, 71, 87, 0.2);
+    color: var(--danger-color);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    border: 2px solid rgba(255, 71, 87, 0.3);
+}
+
+/* Barra de progreso */
+#importProgress {
+    margin-top: 1.5rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 30px;
+    background: rgba(0, 212, 255, 0.1);
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00d4ff, #00ff88);
+    transition: width 0.3s ease;
+    width: 0%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+#progressText {
+    text-align: center;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Botones del modal */
+#importModal .btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#importModal .btn-primary {
+    background: linear-gradient(135deg, #00d4ff, #0099cc);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+}
+
+#importModal .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+}
+
+#importModal .btn-secondary {
+    background: rgba(0, 212, 255, 0.1);
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    color: var(--primary-color);
+}
+
+#importModal .btn-secondary:hover {
+    background: rgba(0, 212, 255, 0.2);
+    border-color: var(--primary-color);
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 768px) {
+    #importModal .modal-container {
+        width: 95%;
+        max-height: 90vh;
+    }
+    
+    #importModal .modal-header,
+    #importModal .modal-body,
+    #importModal .modal-footer {
+        padding: 1.25rem;
+    }
+    
+    #importModal .modal-title {
+        font-size: 1.25rem;
+    }
+    
+    .preview-row {
+        grid-template-columns: 70px 1fr;
+        gap: 0.5rem;
+    }
+    
+    .preview-row span:nth-child(n+3) {
+        grid-column: 1 / -1;
+    }
+    
+    .file-upload-area {
+        padding: 2rem 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #importModal .import-instructions {
+        padding: 1rem;
+    }
+    
+    .import-summary {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

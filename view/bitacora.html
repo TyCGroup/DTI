@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BITÁCORA DE SERVICIOS | TYC GROUP</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+    
+    <!-- CSS Base (OBLIGATORIO) -->
+    <link rel="stylesheet" href="../css/dashboard.css">
+    
+    <!-- CSS Específico -->
+    <link rel="stylesheet" href="../css/bitacora.css">
+    
+    <!-- SCRIPTS (ORDEN IMPORTANTE) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="../js/auth-module.js"></script>
+    <script src="../js/constants.js"></script>
+    <script src="../js/shared-components.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/form-validator.js"></script>
+    <script src="../js/firebase-helpers.js"></script>
+    <script src="../js/dashboard.js"></script>
+
+    <!-- SheetJS para exportar a Excel -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <!-- Contenedor Principal -->
+    <main class="main-content" id="mainContent">
+        <!-- Vista Landing: Selección de Acción -->
+        <div class="bitacora-landing" id="bitacoraLanding">
+            <div class="landing-header">
+                <h1 class="page-title">BITÁCORA DE SERVICIOS</h1>
+                <p class="page-subtitle">SISTEMA DE REGISTRO Y SEGUIMIENTO DE INCIDENCIAS</p>
+            </div>
+
+            <div class="action-cards">
+                <!-- Card: Nuevo Registro -->
+                <div class="action-card" id="btnNuevoRegistro">
+                    <div class="card-icon">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5v14M5 12h14"/>
+                        </svg>
+                    </div>
+                    <h2 class="card-title">NUEVO REGISTRO</h2>
+                    <p class="card-description">
+                        Crear un nuevo reporte de incidencia o servicio técnico
+                    </p>
+                    <div class="card-action">
+                        <span>CREAR REGISTRO</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Card: Vista/Edición -->
+                <div class="action-card" id="btnVistaEdicion">
+                    <div class="card-icon">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                    </div>
+                    <h2 class="card-title">VISTA / EDICIÓN</h2>
+                    <p class="card-description">
+                        Consultar y editar registros existentes de la bitácora
+                    </p>
+                    <div class="card-action">
+                        <span>VER REGISTROS</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vista Formulario: Nuevo Registro -->
+        <div class="bitacora-form-view hidden" id="bitacoraFormView">
+            <div class="form-header">
+                <button class="btn-back" id="btnBackToLanding">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    VOLVER
+                </button>
+                <h1 class="page-title">NUEVO REGISTRO DE SERVICIO</h1>
+            </div>
+
+            <form id="bitacoraForm" class="bitacora-form">
+                <!-- Sección: Información General -->
+                <div class="form-section">
+                    <h2 class="section-title">INFORMACIÓN GENERAL</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fechaSolicitud" class="form-label">
+                                FECHA DE SOLICITUD
+                                <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="date" 
+                                id="fechaSolicitud" 
+                                name="fechaSolicitud"
+                                class="form-input"
+                                required
+                            >
+                            <div class="error-message"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fechaFinalizacion" class="form-label">
+                                FECHA DE FINALIZACIÓN
+                            </label>
+                            <input 
+                                type="date" 
+                                id="fechaFinalizacion" 
+                                name="fechaFinalizacion"
+                                class="form-input"
+                            >
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="area" class="form-label">
+                                ÁREA
+                                <span class="required">*</span>
+                            </label>
+                            <select 
+                                id="area" 
+                                name="area"
+                                class="form-select searchable"
+                                required
+                            >
+                                <option value="">SELECCIONE UN ÁREA</option>
+                            </select>
+                            <div class="error-message"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="colaborador" class="form-label">
+                                COLABORADOR
+                                <span class="required">*</span>
+                            </label>
+                            <select 
+                                id="colaborador" 
+                                name="colaborador"
+                                class="form-select searchable"
+                                required
+                                disabled
+                            >
+                                <option value="">PRIMERO SELECCIONE UN ÁREA</option>
+                            </select>
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección: Tipo de Servicio -->
+                <div class="form-section">
+                    <h2 class="section-title">TIPO DE SERVICIO</h2>
+                    
+                    <div class="service-types">
+                        <div class="service-type-card">
+                            <input 
+                                type="radio" 
+                                id="servicioERP" 
+                                name="tipoServicio" 
+                                value="ERP"
+                                class="service-radio"
+                            >
+                            <label for="servicioERP" class="service-label">
+                                <div class="service-header">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                        <path d="M3 9h18M9 21V9"/>
+                                    </svg>
+                                    <h3>SOPORTE ERP</h3>
+                                </div>
+                                <p class="service-description">
+                                    Incidencias relacionadas con el sistema de planificación de recursos empresariales (ERP), que es central para las operaciones del negocio.
+                                </p>
+                            </label>
+                        </div>
+
+                        <div class="service-type-card">
+                            <input 
+                                type="radio" 
+                                id="servicioTecnico" 
+                                name="tipoServicio" 
+                                value="TECNICO"
+                                class="service-radio"
+                            >
+                            <label for="servicioTecnico" class="service-label">
+                                <div class="service-header">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
+                                    </svg>
+                                    <h3>SOPORTE TÉCNICO</h3>
+                                </div>
+                                <p class="service-description">
+                                    Incidencias técnicas para prevenir, diagnosticar y resolver cualquier problema o incidencia relacionada con la tecnología.
+                                </p>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="tipoServicioError"></div>
+                </div>
+
+                <!-- Sección: Categoría (Condicional) -->
+                <div class="form-section hidden" id="categoriaSection">
+                    <h2 class="section-title">CATEGORÍA</h2>
+                    
+                    <!-- Categorías ERP -->
+                    <div class="categoria-erp hidden" id="categoriasERP">
+                        <div class="form-group">
+                            <label for="categoriaERP" class="form-label">
+                                CATEGORÍA ERP
+                                <span class="required">*</span>
+                            </label>
+                            <select 
+                                id="categoriaERP" 
+                                name="categoria"
+                                class="form-select"
+                            >
+                                <option value="">SELECCIONE UNA CATEGORÍA</option>
+                            </select>
+                            <div class="categoria-description" id="categoriaERPDesc"></div>
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+
+                    <!-- Categorías Técnico -->
+                    <div class="categoria-tecnico hidden" id="categoriasTecnico">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="categoriaPrincipal" class="form-label">
+                                    CATEGORÍA PRINCIPAL
+                                    <span class="required">*</span>
+                                </label>
+                                <select 
+                                    id="categoriaPrincipal" 
+                                    name="categoriaPrincipal"
+                                    class="form-select"
+                                >
+                                    <option value="">SELECCIONE UNA CATEGORÍA</option>
+                                </select>
+                                <div class="categoria-description" id="categoriaPrincipalDesc"></div>
+                                <div class="error-message"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="subcategoria" class="form-label">
+                                    SUBCATEGORÍA
+                                    <span class="required">*</span>
+                                </label>
+                                <select 
+                                    id="subcategoria" 
+                                    name="subcategoria"
+                                    class="form-select"
+                                    disabled
+                                >
+                                    <option value="">PRIMERO SELECCIONE CATEGORÍA</option>
+                                </select>
+                                <div class="categoria-description" id="subcategoriaDesc"></div>
+                                <div class="error-message"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección: Detalles del Servicio -->
+                <div class="form-section">
+                    <h2 class="section-title">DETALLES DEL SERVICIO</h2>
+                    
+                    <div class="form-group">
+                        <label for="solucion" class="form-label">
+                            SOLUCIÓN DEL PROBLEMA
+                            <span class="required">*</span>
+                        </label>
+                        <textarea 
+                            id="solucion" 
+                            name="solucion"
+                            class="form-textarea"
+                            rows="5"
+                            placeholder="DESCRIBE LA SOLUCIÓN IMPLEMENTADA..."
+                            required
+                        ></textarea>
+                        <div class="error-message"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reviso" class="form-label">
+                                REVISÓ
+                                <span class="required">*</span>
+                            </label>
+                            <select 
+                                id="reviso" 
+                                name="reviso"
+                                class="form-select"
+                                required
+                            >
+                                <option value="">SELECCIONE QUIEN REVISÓ</option>
+                            </select>
+                            <div class="error-message"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="status" class="form-label">
+                                STATUS
+                                <span class="required">*</span>
+                            </label>
+                            <select 
+                                id="status" 
+                                name="status"
+                                class="form-select"
+                                required
+                            >
+                                <option value="">SELECCIONE UN STATUS</option>
+                                <option value="FINALIZADO">FINALIZADO</option>
+                                <option value="PENDIENTE">PENDIENTE</option>
+                            </select>
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="btnCancelar">
+                        CANCELAR
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+                            <polyline points="17 21 17 13 7 13 7 21"/>
+                            <polyline points="7 3 7 8 15 8"/>
+                        </svg>
+                        GUARDAR REGISTRO
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Vista Lista: Ver/Editar Registros -->
+        <div class="bitacora-list-view hidden" id="bitacoraListView">
+            <div class="list-header">
+                <button class="btn-back" id="btnBackToLandingFromList">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    VOLVER
+                </button>
+                <h1 class="page-title">REGISTROS DE BITÁCORA</h1>
+            </div>
+
+            <!-- Filtros y Búsqueda -->
+            <div class="list-filters">
+                <div class="search-box">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    <input
+                        type="text"
+                        id="searchRegistros"
+                        class="search-input"
+                        placeholder="BUSCAR POR ÁREA, COLABORADOR, CATEGORÍA..."
+                    >
+                </div>
+
+                <div class="filter-controls">
+                    <select id="filterStatus" class="filter-select">
+                        <option value="">TODOS LOS STATUS</option>
+                        <option value="FINALIZADO">FINALIZADO</option>
+                        <option value="PENDIENTE">PENDIENTE</option>
+                    </select>
+
+                    <select id="filterTipoServicio" class="filter-select">
+                        <option value="">TODOS LOS SERVICIOS</option>
+                        <option value="ERP">SOPORTE ERP</option>
+                        <option value="TECNICO">SOPORTE TÉCNICO</option>
+                    </select>
+
+                    <button class="btn-export" id="btnExportExcel" onclick="bitacoraController.exportToExcel()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        EXPORTAR A EXCEL
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tabla de Registros -->
+            <div class="table-container">
+                <table class="data-table" id="registrosTable">
+                    <thead>
+                        <tr>
+                            <th>FECHA SOLICITUD</th>
+                            <th>ÁREA</th>
+                            <th>COLABORADOR</th>
+                            <th>TIPO SERVICIO</th>
+                            <th>CATEGORÍA</th>
+                            <th>STATUS</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody id="registrosTableBody">
+                        <!-- Se llena dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginación -->
+            <div class="pagination" id="pagination">
+                <!-- Se genera dinámicamente -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal: Detalle de Registro -->
+    <div class="modal" id="detalleModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 class="modal-title">DETALLE DEL REGISTRO</h2>
+                <button class="modal-close" onclick="bitacoraController.closeDetalleModal()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body" id="detalleModalBody">
+                <!-- Se llena dinámicamente -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="bitacoraController.closeDetalleModal()">
+                    CERRAR
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Confirmar Eliminación -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content modal-small">
+            <div class="modal-header modal-header-danger">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="modal-icon-danger">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                <h2 class="modal-title">CONFIRMAR ELIMINACIÓN</h2>
+                <button class="modal-close" onclick="bitacoraController.closeDeleteModal()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="delete-warning">
+                    <p class="delete-message">¿ESTÁ SEGURO DE ELIMINAR ESTE REGISTRO?</p>
+                    <div class="delete-info" id="deleteInfo">
+                        <!-- Se llena dinámicamente con la info del registro -->
+                    </div>
+                    <p class="delete-alert">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                            <line x1="12" y1="9" x2="12" y2="13"/>
+                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                        </svg>
+                        ESTA ACCIÓN NO SE PUEDE DESHACER
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="bitacoraController.closeDeleteModal()">
+                    CANCELAR
+                </button>
+                <button class="btn btn-danger" onclick="bitacoraController.confirmDelete()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"/>
+                        <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                        <line x1="10" y1="11" x2="10" y2="17"/>
+                        <line x1="14" y1="11" x2="14" y2="17"/>
+                    </svg>
+                    ELIMINAR REGISTRO
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Editar Registro -->
+    <div class="modal" id="editModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 class="modal-title">EDITAR REGISTRO</h2>
+                <button class="modal-close" onclick="bitacoraController.closeEditModal()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body" id="editModalBody">
+                <!-- Formulario de edición -->
+                <form id="editForm" class="edit-form">
+                    <!-- Sección: Información General -->
+                    <div class="form-section">
+                        <h3 class="section-title">INFORMACIÓN GENERAL</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editFechaSolicitud" class="form-label">
+                                    FECHA DE SOLICITUD
+                                    <span class="required">*</span>
+                                </label>
+                                <input type="date" id="editFechaSolicitud" class="form-input" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editFechaFinalizacion" class="form-label">FECHA DE FINALIZACIÓN</label>
+                                <input type="date" id="editFechaFinalizacion" class="form-input">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editArea" class="form-label">
+                                    ÁREA
+                                    <span class="required">*</span>
+                                </label>
+                                <select id="editArea" class="form-select" required>
+                                    <option value="">SELECCIONE UN ÁREA</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editColaborador" class="form-label">
+                                    COLABORADOR
+                                    <span class="required">*</span>
+                                </label>
+                                <select id="editColaborador" class="form-select" required>
+                                    <option value="">SELECCIONE UN COLABORADOR</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección: Tipo de Servicio -->
+                    <div class="form-section">
+                        <h3 class="section-title">TIPO DE SERVICIO</h3>
+                        <div class="service-types">
+                            <div class="service-type-card">
+                                <input type="radio" id="editServicioERP" name="editTipoServicio" value="ERP" class="service-radio">
+                                <label for="editServicioERP" class="service-label">
+                                    <div class="service-header">
+                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                            <path d="M3 9h18M9 21V9"/>
+                                        </svg>
+                                        <h3>SOPORTE ERP</h3>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="service-type-card">
+                                <input type="radio" id="editServicioTecnico" name="editTipoServicio" value="TECNICO" class="service-radio">
+                                <label for="editServicioTecnico" class="service-label">
+                                    <div class="service-header">
+                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
+                                        </svg>
+                                        <h3>SOPORTE TÉCNICO</h3>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección: Categoría -->
+                    <div class="form-section" id="editCategoriaSection">
+                        <h3 class="section-title">CATEGORÍA</h3>
+
+                        <!-- Categorías ERP -->
+                        <div class="categoria-erp hidden" id="editCategoriasERP">
+                            <div class="form-group">
+                                <label for="editCategoriaERP" class="form-label">
+                                    CATEGORÍA ERP
+                                    <span class="required">*</span>
+                                </label>
+                                <select id="editCategoriaERP" class="form-select">
+                                    <option value="">SELECCIONE UNA CATEGORÍA</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Categorías Técnico -->
+                        <div class="categoria-tecnico hidden" id="editCategoriasTecnico">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="editCategoriaPrincipal" class="form-label">
+                                        CATEGORÍA PRINCIPAL
+                                        <span class="required">*</span>
+                                    </label>
+                                    <select id="editCategoriaPrincipal" class="form-select">
+                                        <option value="">SELECCIONE UNA CATEGORÍA</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="editSubcategoria" class="form-label">
+                                        SUBCATEGORÍA
+                                        <span class="required">*</span>
+                                    </label>
+                                    <select id="editSubcategoria" class="form-select">
+                                        <option value="">PRIMERO SELECCIONE CATEGORÍA</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección: Detalles -->
+                    <div class="form-section">
+                        <h3 class="section-title">DETALLES DEL SERVICIO</h3>
+
+                        <div class="form-group">
+                            <label for="editSolucion" class="form-label">
+                                SOLUCIÓN DEL PROBLEMA
+                                <span class="required">*</span>
+                            </label>
+                            <textarea id="editSolucion" class="form-textarea" rows="5" required></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editReviso" class="form-label">
+                                    REVISÓ
+                                    <span class="required">*</span>
+                                </label>
+                                <select id="editReviso" class="form-select" required>
+                                    <option value="">SELECCIONE QUIEN REVISÓ</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editStatus" class="form-label">
+                                    STATUS
+                                    <span class="required">*</span>
+                                </label>
+                                <select id="editStatus" class="form-select" required>
+                                    <option value="">SELECCIONE UN STATUS</option>
+                                    <option value="FINALIZADO">FINALIZADO</option>
+                                    <option value="PENDIENTE">PENDIENTE</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="bitacoraController.closeEditModal()">
+                    CANCELAR
+                </button>
+                <button class="btn btn-primary" onclick="bitacoraController.saveEdit()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+                        <polyline points="17 21 17 13 7 13 7 21"/>
+                        <polyline points="7 3 7 8 15 8"/>
+                    </svg>
+                    GUARDAR CAMBIOS
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Módulo Específico -->
+    <script src="../js/bitacora.js"></script>
+    <script src="../js/bitacora-data.js"></script>
+    <script src="../js/bitacora-submit.js"></script>
+    
+    <!-- Inicialización (AL FINAL) -->
+    <script>
+        SharedComponents.initializePage('bitacora');
+    </script>
+</body>
+</html>

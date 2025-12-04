@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - TyC Group</title>
+    <script src="../js/favicon-loader.js"></script>
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+    <!-- 🎨 Sidebar y Header se insertan automáticamente -->
+    
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+        <!-- Page Content -->
+        <div class="page-content">
+            <h1 class="page-title">Panel de Control - TyC Group</h1>
+            <p class="page-subtitle">Bienvenido al sistema de gestión tecnológica</p>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 11l3 3L22 4"/>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 class="stat-number">0</h3>
+                        <p class="stat-label">Tareas Pendientes</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+                            <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+                            <line x1="6" y1="6" x2="6.01" y2="6"/>
+                            <line x1="6" y1="18" x2="6.01" y2="18"/>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 class="stat-number">48</h3>
+                        <p class="stat-label">Equipos Activos</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon red">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 class="stat-number">3</h3>
+                        <p class="stat-label">Completadas</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon cyan">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 class="stat-number">0</h3>
+                        <p class="stat-label">Urgentes</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Status -->
+            <div class="status-section">
+                <h2 class="section-title">Estado del Sistema</h2>
+                <div class="status-card">
+                    <div class="status-indicator success"></div>
+                    <p class="status-text">Todos los sistemas operando normalmente</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 🎨 Modales y Scroll Button se insertan automáticamente -->
+
+    <!-- Firebase & Auth -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="../js/auth-module.js"></script>
+    <script src="../js/shared-components.js"></script>
+    <script src="../js/dashboard.js"></script>
+    
+    <!-- 🚀 Una línea = Todo el layout -->
+    <script>
+        SharedComponents.initializePage('dashboard');
+    </script>
+</body>
+</html>

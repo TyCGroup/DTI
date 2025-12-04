@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Roles - TyC Group</title>
+    <script src="../js/favicon-loader.js"></script>
+
+    <!-- Estilos base (OBLIGATORIO) -->
+    <link rel="stylesheet" href="../css/dashboard.css">
+
+    <!-- Estilos específicos -->
+    <link rel="stylesheet" href="../css/roles.css">
+</head>
+<body>
+    <!-- Sidebar y Header se insertan automáticamente -->
+
+    <main class="main-content">
+        <div class="page-content" id="rolesPage">
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <h1 class="toolbar-title">Gestión de Roles y Permisos</h1>
+                    <p class="toolbar-subtitle">Administra los accesos de los usuarios al sistema</p>
+                </div>
+
+                <div class="toolbar-actions">
+                    <button class="btn btn-secondary" id="exportBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        <span>Exportar</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filtros -->
+            <div class="filters-container">
+                <div class="filter-group">
+                    <button class="filter-btn active" data-filter="all">Todos</button>
+                    <button class="filter-btn" data-filter="activo">Con Acceso</button>
+                    <button class="filter-btn" data-filter="inactivo">Sin Acceso</button>
+                </div>
+
+                <div class="search-filter">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    <input type="text" id="searchFilter" placeholder="Buscar usuarios...">
+                </div>
+            </div>
+
+            <!-- Contenedor de la tabla -->
+            <div id="tableContainer"></div>
+        </div>
+    </main>
+
+    <!-- Modal Gestionar Permisos -->
+    <div class="modal" id="permissionsModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-header-content">
+                    <h2 class="modal-title" id="modalTitle">Gestionar Acceso al Sistema</h2>
+                    <p class="modal-subtitle" id="modalSubtitle">Usuario: <strong id="userNameDisplay"></strong></p>
+                </div>
+                <button class="close-btn" id="closeModalBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="permissionsForm">
+                    <!-- Activar/Desactivar Acceso -->
+                    <div class="form-group-horizontal">
+                        <div class="form-group-content">
+                            <label class="form-label">
+                                Acceso al Sistema
+                                <span class="form-hint-inline">Permitir al usuario iniciar sesión</span>
+                            </label>
+                        </div>
+                        <div class="toggle-group">
+                            <label class="toggle-label">
+                                <input
+                                    type="checkbox"
+                                    class="toggle-checkbox"
+                                    id="hasAccess"
+                                    name="hasAccess"
+                                >
+                                <span class="toggle-switch"></span>
+                                <span class="toggle-text" id="accessToggleText">Inactivo</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Contenedor que se muestra solo si tiene acceso -->
+                    <div id="permissionsContainer" style="display: none;">
+                        <!-- Contraseña -->
+                        <div class="form-group">
+                            <label class="form-label" for="password">
+                                Contraseña <span class="required">*</span>
+                                <span class="form-hint-inline">Mínimo 6 caracteres</span>
+                            </label>
+                            <div class="password-input-group">
+                                <input
+                                    type="password"
+                                    class="form-input"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Ingresa la contraseña"
+                                    minlength="6"
+                                >
+                                <button type="button" class="password-toggle-btn" id="togglePasswordBtn">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="eyeIcon">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <span class="form-hint">El correo del usuario se usará como email de login</span>
+                        </div>
+
+                        <!-- Módulos Disponibles -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                Módulos Disponibles <span class="required">*</span>
+                                <span class="form-hint-inline">Selecciona los módulos a los que puede acceder</span>
+                            </label>
+                            <div class="modules-grid" id="modulesGrid">
+                                <!-- Se generarán dinámicamente -->
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelBtn">Cancelar</button>
+                <button class="btn btn-primary" id="saveBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Guardar Cambios
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS (ORDEN IMPORTANTE) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="../js/auth-module.js"></script>
+    <script src="../js/constants.js"></script>
+    <script src="../js/shared-components.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/firebase-helpers.js"></script>
+    <script src="../js/dashboard.js"></script>
+
+    <!-- Módulo específico -->
+    <script src="../js/roles.js"></script>
+
+    <!-- Línea mágica: Inserta todo el layout automáticamente -->
+    <script>
+        SharedComponents.initializePage('roles');
+    </script>
+</body>
+</html>

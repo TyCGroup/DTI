@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración - TyC Group</title>
+    <script src="../js/favicon-loader.js"></script>
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/administracion.css">
+</head>
+<body>
+    <!-- 🎨 Sidebar y Header se insertarán aquí automáticamente -->
+    
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+        <!-- CONTENIDO ESPECÍFICO DE LA PÁGINA -->
+        <div class="page-content">
+            <h1 class="page-title">Administración del Sistema</h1>
+            <p class="page-subtitle">Gestiona usuarios, áreas y configuraciones del sistema</p>
+
+            <!-- PANELES DE ADMINISTRACIÓN -->
+            <div class="admin-grid" id="adminGrid">
+                <!-- Los paneles se generarán dinámicamente -->
+            </div>
+        </div>
+    </main>
+
+    <!-- 🎨 Modales y Scroll Button se insertarán automáticamente -->
+
+    <!-- SCRIPTS (ORDEN IMPORTANTE) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="../js/auth-module.js"></script>
+    <script src="../js/constants.js"></script>
+    <script src="../js/shared-components.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/firebase-helpers.js"></script>
+    <script src="../js/dashboard.js"></script>
+    <script src="../js/administracion.js"></script>
+    
+    <!-- 🚀 MAGIA: Una línea inserta TODO -->
+    <script>
+        SharedComponents.initializePage('administracion');
+    </script>
+</body>
+</html>
