@@ -3,37 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventario de Laptops - TyC Group</title>
+    <title>Inventario de Desktops - TyC Group</title>
     <script src="../js/favicon-loader.js"></script>
 
     <!-- Estilos base (OBLIGATORIO) -->
     <link rel="stylesheet" href="../css/dashboard.css">
     <!-- Estilos específicos -->
-    <link rel="stylesheet" href="../css/inventario-laptop.css">
+    <link rel="stylesheet" href="../css/inventario-desktop.css">
 </head>
 <body>
     <!-- Sidebar y Header se insertan automáticamente -->
 
     <main class="main-content">
-        <div class="page-content" id="inventarioLaptopPage">
+        <div class="page-content" id="inventarioDesktopPage">
             <!-- Header -->
             <div class="page-header">
                 <div>
-                    <h1 class="page-title">Inventario de Laptops</h1>
-                    <p class="page-subtitle">Gestión completa del inventario de laptops</p>
+                    <h1 class="page-title">Inventario de Desktops</h1>
+                    <p class="page-subtitle">Gestión completa del inventario de desktops</p>
                 </div>
                 <div class="breadcrumb">
                     <a href="inventario.html">Inventarios</a>
                     <span>/</span>
-                    <span>Laptops</span>
+                    <span>Desktops</span>
                 </div>
             </div>
 
             <!-- Toolbar -->
             <div class="toolbar">
                 <div class="toolbar-left">
-                    <h2>Inventario de Laptops</h2>
-                    <p id="itemCount" class="item-count">0 laptops</p>
+                    <h2>Inventario de Desktops</h2>
+                    <p id="itemCount" class="item-count">0 desktops</p>
                 </div>
 
                 <div class="toolbar-actions">
@@ -45,12 +45,12 @@
                         </svg>
                         Exportar
                     </button>
-                    <button class="btn btn-primary" id="addLaptopBtn">
+                    <button class="btn btn-primary" id="addDesktopBtn">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="12" y1="5" x2="12" y2="19"/>
                             <line x1="5" y1="12" x2="19" y2="12"/>
                         </svg>
-                        Nueva Laptop
+                        Nueva Desktop
                     </button>
                 </div>
             </div>
@@ -83,16 +83,16 @@
         </div>
     </main>
 
-    <!-- Modal Agregar/Editar Laptop -->
-    <div class="modal" id="laptopModal">
+    <!-- Modal Agregar/Editar Desktop -->
+    <div class="modal" id="desktopModal">
         <div class="modal-overlay"></div>
         <div class="modal-container">
             <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">Nueva Laptop</h2>
+                <h2 class="modal-title" id="modalTitle">Nueva Desktop</h2>
                 <button class="close-btn" id="closeModalBtn">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="laptopForm">
+                <form id="desktopForm">
                     <!-- INFORMACIÓN BÁSICA -->
                     <div class="form-section">
                         <h3 class="form-section-title">Información Básica</h3>
@@ -107,12 +107,12 @@
                                     class="form-input"
                                     id="st"
                                     name="st"
-                                    placeholder="L-12345"
+                                    placeholder="D-12345"
                                     required
                                     maxlength="20"
                                 >
                                 <span class="form-error" id="stError"></span>
-                                <span class="form-hint">Ejemplo: L-12345 (único, no repetible)</span>
+                                <span class="form-hint">Ejemplo: D-12345 (único, no repetible)</span>
                             </div>
                         </div>
 
@@ -349,7 +349,7 @@
                         <polyline points="17 21 17 13 7 13 7 21"/>
                         <polyline points="7 3 7 8 15 8"/>
                     </svg>
-                    Guardar Laptop
+                    Guardar Desktop
                 </button>
             </div>
         </div>
@@ -360,12 +360,12 @@
         <div class="modal-overlay"></div>
         <div class="modal-container">
             <div class="modal-header">
-                <h2 class="modal-title">Asignar Usuario a Laptop</h2>
+                <h2 class="modal-title">Asignar Usuario a Desktop</h2>
                 <button class="close-btn" id="closeAssignModalBtn">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="laptop-info">
-                    <p><strong>Laptop:</strong> <span id="assignLaptopInfo"></span></p>
+                <div class="desktop-info">
+                    <p><strong>Desktop:</strong> <span id="assignDesktopInfo"></span></p>
                     <p><strong>Usuario actual:</strong> <span id="assignCurrentUser"></span></p>
                 </div>
 
@@ -441,7 +441,7 @@
                         <line x1="12" y1="8" x2="12" y2="12" stroke="#ff4757"/>
                         <line x1="12" y1="16" x2="12.01" y2="16" stroke="#ff4757"/>
                     </svg>
-                    <p>¿Estás seguro de que deseas eliminar la laptop <strong id="deleteLaptopST"></strong>?</p>
+                    <p>¿Estás seguro de que deseas eliminar la desktop <strong id="deleteDesktopST"></strong>?</p>
                     <p class="warning-text">Esta acción no se puede deshacer.</p>
                 </div>
             </div>
@@ -474,11 +474,11 @@
     <script src="../js/dashboard.js"></script>
 
     <!-- Módulo específico -->
-    <script src="../js/inventario-laptop.js"></script>
+    <script src="../js/inventario-desktop.js"></script>
 
     <!-- Línea mágica -->
     <script>
-        SharedComponents.initializePage('inventario-laptop');
+        SharedComponents.initializePage('inventario-desktop');
     </script>
 </body>
 </html>

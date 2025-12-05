@@ -1,25 +1,25 @@
 // ====================================================
 // INVENTARIO-LAPTOP.JS - TyC Group Dashboard
-// Gestión de Inventario de Laptops
+// Gestión de Inventario de Desktops
 // ====================================================
 
-class InventarioLaptopController {
+class InventarioDesktopController {
     constructor() {
         this.fb = getFirebaseHelper();
         this.validator = null;
-        this.laptops = [];
-        this.filteredLaptops = [];
+        this.desktops = [];
+        this.filteredDesktops = [];
         this.usuarios = [];
         this.currentFilter = 'all';
         this.searchQuery = '';
         this.editingId = null;
-        this.currentLaptopForAssign = null;
+        this.currentDesktopForAssign = null;
         this.unsubscribe = null;
         this.init();
     }
 
     async init() {
-        console.log('🚀 Iniciando Inventario de Laptops...');
+        console.log('🚀 Iniciando Inventario de Desktops...');
 
         try {
             // Esperar autenticación
@@ -27,7 +27,7 @@ class InventarioLaptopController {
 
             // Verificar permisos
             if (!this.checkPermissions()) {
-                this.showError('No tienes permisos para gestionar inventario de laptops');
+                this.showError('No tienes permisos para gestionar inventario de desktops');
                 setTimeout(() => window.location.href = 'dashboard.html', 2000);
                 return;
             }
@@ -38,7 +38,7 @@ class InventarioLaptopController {
             await this.loadUsuarios();
             await this.loadData();
 
-            console.log('✅ Inventario de Laptops inicializado');
+            console.log('✅ Inventario de Desktops inicializado');
         } catch (error) {
             console.error('❌ Error al inicializar:', error);
             this.showError('Error al inicializar el módulo');
@@ -68,7 +68,7 @@ class InventarioLaptopController {
     // ===== VALIDACIÓN =====
 
     initValidator() {
-        this.validator = new FormValidator('laptopForm');
+        this.validator = new FormValidator('desktopForm');
         this.validator.setRules({
             st: {
                 required: true,
@@ -143,14 +143,14 @@ class InventarioLaptopController {
         try {
             // Si estamos editando, permitir el mismo ST
             if (this.editingId) {
-                const currentLaptop = this.laptops.find(l => l.id === this.editingId);
-                if (currentLaptop && currentLaptop.st === st) {
+                const currentDesktop = this.desktops.find(l => l.id === this.editingId);
+                if (currentDesktop && currentDesktop.st === st) {
                     return true;
                 }
             }
 
             // Buscar en Firestore si ya existe
-            const exists = await this.fb.existsWhere('inventarios_laptops', 'st', '==', st);
+            const exists = await this.fb.existsWhere('inventarios_desktops', 'st', '==', st);
             return !exists; // Retorna true si NO existe (válido)
         } catch (error) {
             console.error('Error validando ST único:', error);
@@ -161,8 +161,8 @@ class InventarioLaptopController {
     // ===== EVENT LISTENERS =====
 
     setupEventListeners() {
-        // Botón agregar laptop
-        document.getElementById('addLaptopBtn')?.addEventListener('click', () => {
+        // Botón agregar desktop
+        document.getElementById('addDesktopBtn')?.addEventListener('click', () => {
             this.showModal();
         });
 
@@ -253,9 +253,9 @@ class InventarioLaptopController {
         });
 
         document.getElementById('editFromDetailBtn')?.addEventListener('click', () => {
-            const laptopId = this.currentLaptopForAssign;
+            const desktopId = this.currentDesktopForAssign;
             this.closeDetailModal();
-            this.edit(laptopId);
+            this.edit(desktopId);
         });
 
         document.getElementById('downloadExcelBtn')?.addEventListener('click', () => {
@@ -416,9 +416,9 @@ class InventarioLaptopController {
             this.showLoading(true);
 
             // Escuchar cambios en tiempo real
-            this.unsubscribe = this.fb.onSnapshot('inventarios_laptops', (docs) => {
-                console.log('📦 Datos de laptops recibidos:', docs);
-                this.laptops = docs;
+            this.unsubscribe = this.fb.onSnapshot('inventarios_desktops', (docs) => {
+                console.log('📦 Datos de desktops recibidos:', docs);
+                this.desktops = docs;
                 this.filterData();
                 this.showLoading(false);
             }, (error) => {
@@ -436,30 +436,30 @@ class InventarioLaptopController {
     // ===== FILTRAR DATOS =====
 
     filterData() {
-        console.log('🔍 Filtrando datos. Total laptops:', this.laptops.length);
+        console.log('🔍 Filtrando datos. Total desktops:', this.desktops.length);
 
-        this.filteredLaptops = this.laptops.filter(laptop => {
+        this.filteredDesktops = this.desktops.filter(desktop => {
             const matchesSearch =
-                laptop.st.toLowerCase().includes(this.searchQuery) ||
-                laptop.marca.toLowerCase().includes(this.searchQuery) ||
-                laptop.modelo.toLowerCase().includes(this.searchQuery) ||
-                (laptop.usuarioAsignado && laptop.usuarioAsignado.nombre.toLowerCase().includes(this.searchQuery));
+                desktop.st.toLowerCase().includes(this.searchQuery) ||
+                desktop.marca.toLowerCase().includes(this.searchQuery) ||
+                desktop.modelo.toLowerCase().includes(this.searchQuery) ||
+                (desktop.usuarioAsignado && desktop.usuarioAsignado.nombre.toLowerCase().includes(this.searchQuery));
 
             const matchesFilter =
                 this.currentFilter === 'all' ||
-                (this.currentFilter === 'activo' && laptop.activo) ||
-                (this.currentFilter === 'inactivo' && !laptop.activo);
+                (this.currentFilter === 'activo' && desktop.activo) ||
+                (this.currentFilter === 'inactivo' && !desktop.activo);
 
             return matchesSearch && matchesFilter;
         });
 
         // Actualizar contador
-        const count = this.filteredLaptops.length;
-        console.log('📊 Laptops filtradas:', count);
+        const count = this.filteredDesktops.length;
+        console.log('📊 Desktops filtradas:', count);
 
         const itemCount = document.getElementById('itemCount');
         if (itemCount) {
-            itemCount.textContent = `${count} laptop${count !== 1 ? 's' : ''}`;
+            itemCount.textContent = `${count} desktop${count !== 1 ? 's' : ''}`;
         }
 
         this.renderTable();
@@ -468,7 +468,7 @@ class InventarioLaptopController {
     // ===== RENDERIZAR TABLA =====
 
     renderTable() {
-        console.log('🎨 Renderizando tabla. Laptops filtradas:', this.filteredLaptops.length);
+        console.log('🎨 Renderizando tabla. Desktops filtradas:', this.filteredDesktops.length);
 
         const container = document.getElementById('tableContainer');
         if (!container) {
@@ -476,7 +476,7 @@ class InventarioLaptopController {
             return;
         }
 
-        if (this.filteredLaptops.length === 0) {
+        if (this.filteredDesktops.length === 0) {
             console.log('📭 Mostrando estado vacío');
             container.innerHTML = `
                 <div class="empty-state">
@@ -484,14 +484,14 @@ class InventarioLaptopController {
                         <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
                         <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
                     </svg>
-                    <h3>No hay laptops registradas</h3>
-                    <p>Comienza agregando una nueva laptop al inventario</p>
-                    <button class="btn btn-primary" onclick="window.inventarioLaptopController.showModal()">
+                    <h3>No hay desktops registradas</h3>
+                    <p>Comienza agregando una nueva desktop al inventario</p>
+                    <button class="btn btn-primary" onclick="window.inventarioDesktopController.showModal()">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="12" y1="5" x2="12" y2="19"/>
                             <line x1="5" y1="12" x2="19" y2="12"/>
                         </svg>
-                        Agregar Primera Laptop
+                        Agregar Primera Desktop
                     </button>
                 </div>
             `;
@@ -516,7 +516,7 @@ class InventarioLaptopController {
                         </tr>
                     </thead>
                     <tbody>
-                        ${this.filteredLaptops.map(laptop => this.renderTableRow(laptop)).join('')}
+                        ${this.filteredDesktops.map(desktop => this.renderTableRow(desktop)).join('')}
                     </tbody>
                 </table>
             </div>
@@ -525,44 +525,44 @@ class InventarioLaptopController {
         container.innerHTML = tableHTML;
     }
 
-    renderTableRow(laptop) {
-        const marcaLabel = this.getMarcaLabel(laptop.marca);
-        const sistemaLabel = this.getSistemaLabel(laptop.sistema);
-        const propiedadLabel = this.getPropiedadLabel(laptop.propiedad);
+    renderTableRow(desktop) {
+        const marcaLabel = this.getMarcaLabel(desktop.marca);
+        const sistemaLabel = this.getSistemaLabel(desktop.sistema);
+        const propiedadLabel = this.getPropiedadLabel(desktop.propiedad);
         // Soporte para campo antiguo (usuarioAsignado) y nuevo (empleadoAsignado)
-        const asignado = laptop.empleadoAsignado || laptop.usuarioAsignado;
+        const asignado = desktop.empleadoAsignado || desktop.usuarioAsignado;
         const usuarioNombre = asignado ? asignado.nombre : 'Sin asignar';
 
         return `
             <tr class="table-row">
-                <td><strong>${laptop.st}</strong></td>
+                <td><strong>${desktop.st}</strong></td>
                 <td>${marcaLabel}</td>
-                <td>${laptop.modelo}</td>
+                <td>${desktop.modelo}</td>
                 <td>${usuarioNombre}</td>
                 <td>${sistemaLabel}</td>
-                <td>${laptop.ram} GB</td>
-                <td>${laptop.capacidadDisco} GB ${laptop.tipoDisco.toUpperCase()}</td>
+                <td>${desktop.ram} GB</td>
+                <td>${desktop.capacidadDisco} GB ${desktop.tipoDisco.toUpperCase()}</td>
                 <td>${propiedadLabel}</td>
                 <td>
-                    <span class="status-badge ${laptop.activo ? 'activo' : 'inactivo'}">
-                        ${laptop.activo ? 'Activo' : 'Inactivo'}
+                    <span class="status-badge ${desktop.activo ? 'activo' : 'inactivo'}">
+                        ${desktop.activo ? 'Activo' : 'Inactivo'}
                     </span>
                 </td>
                 <td>
                     <div class="action-buttons">
-                        <button class="btn-icon" onclick="window.inventarioLaptopController.viewDetails('${laptop.id}')" title="Ver detalles">
+                        <button class="btn-icon" onclick="window.inventarioDesktopController.viewDetails('${desktop.id}')" title="Ver detalles">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                                 <circle cx="12" cy="12" r="3"/>
                             </svg>
                         </button>
-                        <button class="btn-icon" onclick="window.inventarioLaptopController.edit('${laptop.id}')" title="Editar">
+                        <button class="btn-icon" onclick="window.inventarioDesktopController.edit('${desktop.id}')" title="Editar">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                                 <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                             </svg>
                         </button>
-                        <button class="btn-icon" onclick="window.inventarioLaptopController.showAssignUserModal('${laptop.id}')" title="Asignar usuario">
+                        <button class="btn-icon" onclick="window.inventarioDesktopController.showAssignUserModal('${desktop.id}')" title="Asignar usuario">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
                                 <circle cx="8.5" cy="7" r="4"/>
@@ -570,7 +570,7 @@ class InventarioLaptopController {
                                 <line x1="23" y1="11" x2="17" y2="11"/>
                             </svg>
                         </button>
-                        <button class="btn-icon btn-delete" onclick="window.inventarioLaptopController.showDeleteModal('${laptop.id}')" title="Eliminar">
+                        <button class="btn-icon btn-delete" onclick="window.inventarioDesktopController.showDeleteModal('${desktop.id}')" title="Eliminar">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="3 6 5 6 21 6"/>
                                 <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
@@ -587,14 +587,14 @@ class InventarioLaptopController {
     // ===== MODAL OPERACIONES =====
 
     showModal(editId = null) {
-        const modal = document.getElementById('laptopModal');
+        const modal = document.getElementById('desktopModal');
         const title = document.getElementById('modalTitle');
         const saveBtn = document.getElementById('saveBtn');
 
         this.editingId = editId;
 
         if (editId) {
-            title.textContent = 'Editar Laptop';
+            title.textContent = 'Editar Desktop';
             saveBtn.innerHTML = `
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
@@ -604,21 +604,21 @@ class InventarioLaptopController {
                 Guardar Cambios
             `;
 
-            const laptop = this.laptops.find(l => l.id === editId);
-            if (laptop) {
-                this.fillFormWithLaptop(laptop);
+            const desktop = this.desktops.find(l => l.id === editId);
+            if (desktop) {
+                this.fillFormWithDesktop(desktop);
                 // Deshabilitar campo ST en modo edición
                 document.getElementById('st').disabled = true;
             }
         } else {
-            title.textContent = 'Nueva Laptop';
+            title.textContent = 'Nueva Desktop';
             saveBtn.innerHTML = `
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
                     <polyline points="17 21 17 13 7 13 7 21"/>
                     <polyline points="7 3 7 8 15 8"/>
                 </svg>
-                Guardar Laptop
+                Guardar Desktop
             `;
             this.validator.reset();
             document.getElementById('st').disabled = false;
@@ -630,40 +630,40 @@ class InventarioLaptopController {
         modal.classList.add('show');
     }
 
-    fillFormWithLaptop(laptop) {
-        document.getElementById('st').value = laptop.st;
-        document.getElementById('marca').value = laptop.marca;
-        document.getElementById('modelo').value = laptop.modelo;
-        document.getElementById('fechaAdquisicion').value = laptop.fechaAdquisicion;
-        document.getElementById('sistema').value = laptop.sistema;
-        document.getElementById('procesador').value = laptop.procesador;
-        document.getElementById('ram').value = laptop.ram;
-        document.getElementById('capacidadDisco').value = laptop.capacidadDisco;
-        document.getElementById('tipoDisco').value = laptop.tipoDisco;
-        document.getElementById('propiedad').value = laptop.propiedad;
+    fillFormWithDesktop(desktop) {
+        document.getElementById('st').value = desktop.st;
+        document.getElementById('marca').value = desktop.marca;
+        document.getElementById('modelo').value = desktop.modelo;
+        document.getElementById('fechaAdquisicion').value = desktop.fechaAdquisicion;
+        document.getElementById('sistema').value = desktop.sistema;
+        document.getElementById('procesador').value = desktop.procesador;
+        document.getElementById('ram').value = desktop.ram;
+        document.getElementById('capacidadDisco').value = desktop.capacidadDisco;
+        document.getElementById('tipoDisco').value = desktop.tipoDisco;
+        document.getElementById('propiedad').value = desktop.propiedad;
 
         // Soporte para campo antiguo (usuarioAsignado) y nuevo (empleadoAsignado)
-        const asignado = laptop.empleadoAsignado || laptop.usuarioAsignado;
+        const asignado = desktop.empleadoAsignado || desktop.usuarioAsignado;
         if (asignado) {
             document.getElementById('empleadoAsignado').value = asignado.nombre;
             document.getElementById('empleadoAsignadoId').value = asignado.id;
         }
 
-        document.getElementById('activoToggle').checked = laptop.activo;
-        document.getElementById('toggleText').textContent = laptop.activo ? 'Activo' : 'Inactivo';
-        document.getElementById('inactiveFields').style.display = laptop.activo ? 'none' : 'block';
+        document.getElementById('activoToggle').checked = desktop.activo;
+        document.getElementById('toggleText').textContent = desktop.activo ? 'Activo' : 'Inactivo';
+        document.getElementById('inactiveFields').style.display = desktop.activo ? 'none' : 'block';
 
-        if (!laptop.activo) {
-            document.getElementById('categoriaInactivo').value = laptop.categoriaInactivo || '';
-            if (laptop.categoriaInactivo === 'otro') {
+        if (!desktop.activo) {
+            document.getElementById('categoriaInactivo').value = desktop.categoriaInactivo || '';
+            if (desktop.categoriaInactivo === 'otro') {
                 document.getElementById('motivoOtroContainer').style.display = 'block';
-                document.getElementById('motivoInactivo').value = laptop.motivoInactivo || '';
+                document.getElementById('motivoInactivo').value = desktop.motivoInactivo || '';
             }
         }
     }
 
     closeModal() {
-        const modal = document.getElementById('laptopModal');
+        const modal = document.getElementById('desktopModal');
         modal.classList.remove('show');
         this.editingId = null;
         this.validator.reset();
@@ -710,7 +710,7 @@ class InventarioLaptopController {
             saveBtn.disabled = true;
             saveBtn.innerHTML = '<span class="spinner-small"></span> Guardando...';
 
-            const laptopData = {
+            const desktopData = {
                 st: formData.st.toUpperCase(),
                 marca: formData.marca,
                 modelo: formData.modelo,
@@ -735,60 +735,60 @@ class InventarioLaptopController {
                 console.log('👤 Empleado encontrado:', empleado);
 
                 if (empleado) {
-                    laptopData.empleadoAsignado = {
+                    desktopData.empleadoAsignado = {
                         id: empleado.id,
                         nombre: empleado.nombre,
                         area: empleado.area || '',
                         email: empleado.email || ''
                     };
-                    console.log('✅ Empleado asignado guardado:', laptopData.empleadoAsignado);
+                    console.log('✅ Empleado asignado guardado:', desktopData.empleadoAsignado);
                 } else {
-                    laptopData.empleadoAsignado = null;
+                    desktopData.empleadoAsignado = null;
                 }
             } else {
-                laptopData.empleadoAsignado = null;
+                desktopData.empleadoAsignado = null;
             }
 
-            console.log('💾 Data completa a guardar:', laptopData);
+            console.log('💾 Data completa a guardar:', desktopData);
 
             const userData = window.dashboard.auth.getUserData();
             const currentUserId = userData?.id || userData?.uid || firebase.auth().currentUser?.uid;
 
             if (this.editingId) {
                 // Actualizar
-                laptopData.modificadoPor = currentUserId;
-                laptopData.fechaModificacion = firebase.firestore.FieldValue.serverTimestamp();
+                desktopData.modificadoPor = currentUserId;
+                desktopData.fechaModificacion = firebase.firestore.FieldValue.serverTimestamp();
 
-                await this.fb.update('inventarios_laptops', this.editingId, laptopData);
-                this.showToast('Laptop actualizada correctamente', 'success');
+                await this.fb.update('inventarios_desktops', this.editingId, desktopData);
+                this.showToast('Desktop actualizada correctamente', 'success');
             } else {
                 // Crear nueva
-                laptopData.creadoPor = currentUserId;
-                laptopData.fechaCreacion = firebase.firestore.FieldValue.serverTimestamp();
-                laptopData.modificadoPor = currentUserId;
-                laptopData.fechaModificacion = firebase.firestore.FieldValue.serverTimestamp();
-                laptopData.historial = [];
+                desktopData.creadoPor = currentUserId;
+                desktopData.fechaCreacion = firebase.firestore.FieldValue.serverTimestamp();
+                desktopData.modificadoPor = currentUserId;
+                desktopData.fechaModificacion = firebase.firestore.FieldValue.serverTimestamp();
+                desktopData.historial = [];
 
                 // Si tiene empleado asignado, agregar al historial
                 // NOTA: No se puede usar serverTimestamp() dentro de arrays en Firestore
-                if (laptopData.empleadoAsignado) {
-                    laptopData.historial = [{
+                if (desktopData.empleadoAsignado) {
+                    desktopData.historial = [{
                         id: this.generateId(),
-                        empleadoId: laptopData.empleadoAsignado.id,
-                        empleadoNombre: laptopData.empleadoAsignado.nombre,
-                        empleadoArea: laptopData.empleadoAsignado.area,
+                        empleadoId: desktopData.empleadoAsignado.id,
+                        empleadoNombre: desktopData.empleadoAsignado.nombre,
+                        empleadoArea: desktopData.empleadoAsignado.area,
                         fechaAsignacion: new Date(),
                         fechaRetiro: null
                     }];
                 }
 
-                await this.fb.create('inventarios_laptops', laptopData);
-                this.showToast('Laptop agregada exitosamente', 'success');
+                await this.fb.create('inventarios_desktops', desktopData);
+                this.showToast('Desktop agregada exitosamente', 'success');
             }
 
             this.closeModal();
         } catch (error) {
-            console.error('Error al guardar laptop:', error);
+            console.error('Error al guardar desktop:', error);
             if (error.code === 'permission-denied') {
                 this.showError('No tienes permisos para realizar esta acción');
             } else {
@@ -797,7 +797,7 @@ class InventarioLaptopController {
 
             const saveBtn = document.getElementById('saveBtn');
             saveBtn.disabled = false;
-            saveBtn.innerHTML = 'Guardar Laptop';
+            saveBtn.innerHTML = 'Guardar Desktop';
         }
     }
 
@@ -811,10 +811,10 @@ class InventarioLaptopController {
 
     showDeleteModal(id) {
         this.deleteTargetId = id;
-        const laptop = this.laptops.find(l => l.id === id);
-        if (!laptop) return;
+        const desktop = this.desktops.find(l => l.id === id);
+        if (!desktop) return;
 
-        document.getElementById('deleteLaptopST').textContent = laptop.st;
+        document.getElementById('deleteDesktopST').textContent = desktop.st;
         document.getElementById('deleteModal').classList.add('show');
     }
 
@@ -827,27 +827,27 @@ class InventarioLaptopController {
         if (!this.deleteTargetId) return;
 
         try {
-            await this.fb.delete('inventarios_laptops', this.deleteTargetId);
-            this.showToast('Laptop eliminada correctamente', 'success');
+            await this.fb.delete('inventarios_desktops', this.deleteTargetId);
+            this.showToast('Desktop eliminada correctamente', 'success');
             this.closeDeleteModal();
         } catch (error) {
-            console.error('Error al eliminar laptop:', error);
+            console.error('Error al eliminar desktop:', error);
             this.showError('Error al eliminar');
         }
     }
 
     // ===== ASIGNAR USUARIO =====
 
-    showAssignUserModal(laptopId) {
-        const laptop = this.laptops.find(l => l.id === laptopId);
-        if (!laptop) return;
+    showAssignUserModal(desktopId) {
+        const desktop = this.desktops.find(l => l.id === desktopId);
+        if (!desktop) return;
 
-        this.currentLaptopForAssign = laptopId;
+        this.currentDesktopForAssign = desktopId;
 
-        document.getElementById('assignLaptopInfo').textContent = `${laptop.st} - ${laptop.marca} ${laptop.modelo}`;
+        document.getElementById('assignDesktopInfo').textContent = `${desktop.st} - ${desktop.marca} ${desktop.modelo}`;
 
         // Soporte para empleado y usuario asignado
-        const asignado = laptop.empleadoAsignado || laptop.usuarioAsignado;
+        const asignado = desktop.empleadoAsignado || desktop.usuarioAsignado;
         document.getElementById('assignCurrentUser').textContent = asignado ? asignado.nombre : 'Sin asignar';
 
         document.getElementById('searchUserInput').value = '';
@@ -862,7 +862,7 @@ class InventarioLaptopController {
     closeAssignModal() {
         const modal = document.getElementById('assignUserModal');
         modal.classList.remove('show');
-        this.currentLaptopForAssign = null;
+        this.currentDesktopForAssign = null;
     }
 
     async confirmAssignUser() {
@@ -872,8 +872,8 @@ class InventarioLaptopController {
             return;
         }
 
-        const laptop = this.laptops.find(l => l.id === this.currentLaptopForAssign);
-        if (!laptop) return;
+        const desktop = this.desktops.find(l => l.id === this.currentDesktopForAssign);
+        if (!desktop) return;
 
         const usuario = this.usuarios.find(u => u.id === userId);
         if (!usuario) return;
@@ -896,7 +896,7 @@ class InventarioLaptopController {
             };
 
             // Actualizar historial (máximo 5)
-            let historial = laptop.historial || [];
+            let historial = desktop.historial || [];
 
             // Cerrar asignación anterior
             if (historial.length > 0 && historial[0].fechaRetiro === null) {
@@ -920,7 +920,7 @@ class InventarioLaptopController {
 
             updatedData.historial = historial;
 
-            await this.fb.update('inventarios_laptops', this.currentLaptopForAssign, updatedData);
+            await this.fb.update('inventarios_desktops', this.currentDesktopForAssign, updatedData);
             this.showToast('Usuario asignado correctamente', 'success');
             this.closeAssignModal();
         } catch (error) {
@@ -936,19 +936,19 @@ class InventarioLaptopController {
     // ===== VER DETALLES =====
 
     viewDetails(id) {
-        const laptop = this.laptops.find(l => l.id === id);
-        if (!laptop) return;
+        const desktop = this.desktops.find(l => l.id === id);
+        if (!desktop) return;
 
-        this.currentLaptopForAssign = id;
+        this.currentDesktopForAssign = id;
 
         const modal = document.getElementById('detailModal');
         const title = document.getElementById('detailModalTitle');
         const body = document.getElementById('detailModalBody');
 
-        title.textContent = `Detalles Completos - ${laptop.st}`;
+        title.textContent = `Detalles Completos - ${desktop.st}`;
 
-        const historialHTML = (laptop.historial && laptop.historial.length > 0)
-            ? laptop.historial.map((h, index) => {
+        const historialHTML = (desktop.historial && desktop.historial.length > 0)
+            ? desktop.historial.map((h, index) => {
                 // Soporte para campos nuevos (empleado) y antiguos (usuario)
                 const nombre = h.empleadoNombre || h.usuarioNombre || 'undefined';
                 const area = h.empleadoArea || h.usuarioArea || 'Sin área';
@@ -977,52 +977,52 @@ class InventarioLaptopController {
                 <div class="detail-grid">
                     <div class="detail-item">
                         <span class="detail-label">ST:</span>
-                        <span class="detail-value">${laptop.st}</span>
+                        <span class="detail-value">${desktop.st}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Marca:</span>
-                        <span class="detail-value">${this.getMarcaLabel(laptop.marca)}</span>
+                        <span class="detail-value">${this.getMarcaLabel(desktop.marca)}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Modelo:</span>
-                        <span class="detail-value">${laptop.modelo}</span>
+                        <span class="detail-value">${desktop.modelo}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Fecha Adquisición:</span>
-                        <span class="detail-value">${laptop.fechaAdquisicion}</span>
+                        <span class="detail-value">${desktop.fechaAdquisicion}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Sistema Operativo:</span>
-                        <span class="detail-value">${this.getSistemaLabel(laptop.sistema)}</span>
+                        <span class="detail-value">${this.getSistemaLabel(desktop.sistema)}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Procesador:</span>
-                        <span class="detail-value">${this.getProcesadorLabel(laptop.procesador)}</span>
+                        <span class="detail-value">${this.getProcesadorLabel(desktop.procesador)}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">RAM:</span>
-                        <span class="detail-value">${laptop.ram} GB</span>
+                        <span class="detail-value">${desktop.ram} GB</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Disco:</span>
-                        <span class="detail-value">${laptop.capacidadDisco} GB ${laptop.tipoDisco.toUpperCase()}</span>
+                        <span class="detail-value">${desktop.capacidadDisco} GB ${desktop.tipoDisco.toUpperCase()}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Propiedad:</span>
-                        <span class="detail-value">${this.getPropiedadLabel(laptop.propiedad)}</span>
+                        <span class="detail-value">${this.getPropiedadLabel(desktop.propiedad)}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Estado:</span>
                         <span class="detail-value">
-                            <span class="status-badge ${laptop.activo ? 'activo' : 'inactivo'}">
-                                ${laptop.activo ? 'Activo' : 'Inactivo'}
+                            <span class="status-badge ${desktop.activo ? 'activo' : 'inactivo'}">
+                                ${desktop.activo ? 'Activo' : 'Inactivo'}
                             </span>
                         </span>
                     </div>
-                    ${!laptop.activo ? `
+                    ${!desktop.activo ? `
                         <div class="detail-item">
                             <span class="detail-label">Motivo Inactivo:</span>
-                            <span class="detail-value">${laptop.categoriaInactivo === 'otro' ? laptop.motivoInactivo : this.getCategoriaInactivoLabel(laptop.categoriaInactivo)}</span>
+                            <span class="detail-value">${desktop.categoriaInactivo === 'otro' ? desktop.motivoInactivo : this.getCategoriaInactivoLabel(desktop.categoriaInactivo)}</span>
                         </div>
                     ` : ''}
                 </div>
@@ -1030,22 +1030,22 @@ class InventarioLaptopController {
 
             <div class="detail-section">
                 <h3 class="detail-section-title">Usuario Asignado</h3>
-                ${(laptop.empleadoAsignado || laptop.usuarioAsignado) ? `
+                ${(desktop.empleadoAsignado || desktop.usuarioAsignado) ? `
                     <div class="detail-grid">
                         <div class="detail-item">
                             <span class="detail-label">Nombre:</span>
-                            <span class="detail-value">${(laptop.empleadoAsignado || laptop.usuarioAsignado).nombre}</span>
+                            <span class="detail-value">${(desktop.empleadoAsignado || desktop.usuarioAsignado).nombre}</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Área:</span>
-                            <span class="detail-value">${(laptop.empleadoAsignado || laptop.usuarioAsignado).area || 'Sin área'}</span>
+                            <span class="detail-value">${(desktop.empleadoAsignado || desktop.usuarioAsignado).area || 'Sin área'}</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Email:</span>
-                            <span class="detail-value">${(laptop.empleadoAsignado || laptop.usuarioAsignado).email || 'N/A'}</span>
+                            <span class="detail-value">${(desktop.empleadoAsignado || desktop.usuarioAsignado).email || 'N/A'}</span>
                         </div>
                     </div>
-                    <button class="btn btn-secondary mt-2" onclick="window.inventarioLaptopController.showAssignUserModal('${laptop.id}')">
+                    <button class="btn btn-secondary mt-2" onclick="window.inventarioDesktopController.showAssignUserModal('${desktop.id}')">
                         Cambiar Usuario
                     </button>
                 ` : '<p class="text-muted">Sin usuario asignado</p>'}
@@ -1065,63 +1065,63 @@ class InventarioLaptopController {
     closeDetailModal() {
         const modal = document.getElementById('detailModal');
         modal.classList.remove('show');
-        this.currentLaptopForAssign = null;
+        this.currentDesktopForAssign = null;
     }
 
     // ===== EXPORTAR =====
 
     exportData() {
-        if (this.filteredLaptops.length === 0) {
+        if (this.filteredDesktops.length === 0) {
             this.showError('No hay datos para exportar');
             return;
         }
 
-        const data = this.filteredLaptops.map(laptop => ({
-            'ST': laptop.st,
-            'ST Cargador': laptop.stCargador || '',
-            'Marca': this.getMarcaLabel(laptop.marca),
-            'Modelo': laptop.modelo,
-            'Fecha Adquisición': laptop.fechaAdquisicion,
-            'Sistema': this.getSistemaLabel(laptop.sistema),
-            'Procesador': this.getProcesadorLabel(laptop.procesador),
-            'RAM (GB)': laptop.ram,
-            'Disco (GB)': laptop.capacidadDisco,
-            'Tipo Disco': laptop.tipoDisco.toUpperCase(),
-            'Propiedad': this.getPropiedadLabel(laptop.propiedad),
-            'Usuario Asignado': laptop.usuarioAsignado ? laptop.usuarioAsignado.nombre : 'Sin asignar',
-            'Área Usuario': laptop.usuarioAsignado ? laptop.usuarioAsignado.area : '',
-            'Estado': laptop.activo ? 'Activo' : 'Inactivo',
-            'Motivo Inactivo': !laptop.activo && laptop.categoriaInactivo === 'otro' ? laptop.motivoInactivo : ''
+        const data = this.filteredDesktops.map(desktop => ({
+            'ST': desktop.st,
+            'ST Cargador': desktop.stCargador || '',
+            'Marca': this.getMarcaLabel(desktop.marca),
+            'Modelo': desktop.modelo,
+            'Fecha Adquisición': desktop.fechaAdquisicion,
+            'Sistema': this.getSistemaLabel(desktop.sistema),
+            'Procesador': this.getProcesadorLabel(desktop.procesador),
+            'RAM (GB)': desktop.ram,
+            'Disco (GB)': desktop.capacidadDisco,
+            'Tipo Disco': desktop.tipoDisco.toUpperCase(),
+            'Propiedad': this.getPropiedadLabel(desktop.propiedad),
+            'Usuario Asignado': desktop.usuarioAsignado ? desktop.usuarioAsignado.nombre : 'Sin asignar',
+            'Área Usuario': desktop.usuarioAsignado ? desktop.usuarioAsignado.area : '',
+            'Estado': desktop.activo ? 'Activo' : 'Inactivo',
+            'Motivo Inactivo': !desktop.activo && desktop.categoriaInactivo === 'otro' ? desktop.motivoInactivo : ''
         }));
 
         const today = new Date().toISOString().split('T')[0];
-        Utils.exportToCSV(data, `Inventario_Laptops_${today}.csv`);
+        Utils.exportToCSV(data, `Inventario_Desktops_${today}.csv`);
         this.showToast('Inventario exportado exitosamente', 'success');
     }
 
     downloadSingleExcel() {
-        if (!this.currentLaptopForAssign) return;
+        if (!this.currentDesktopForAssign) return;
 
-        const laptop = this.laptops.find(l => l.id === this.currentLaptopForAssign);
-        if (!laptop) return;
+        const desktop = this.desktops.find(l => l.id === this.currentDesktopForAssign);
+        if (!desktop) return;
 
         const data = [{
-            'ST': laptop.st,
-            'ST Cargador': laptop.stCargador || '',
-            'Marca': this.getMarcaLabel(laptop.marca),
-            'Modelo': laptop.modelo,
-            'Fecha Adquisición': laptop.fechaAdquisicion,
-            'Sistema': this.getSistemaLabel(laptop.sistema),
-            'Procesador': this.getProcesadorLabel(laptop.procesador),
-            'RAM (GB)': laptop.ram,
-            'Disco (GB)': laptop.capacidadDisco,
-            'Tipo Disco': laptop.tipoDisco.toUpperCase(),
-            'Propiedad': this.getPropiedadLabel(laptop.propiedad),
-            'Usuario Asignado': laptop.usuarioAsignado ? laptop.usuarioAsignado.nombre : 'Sin asignar',
-            'Estado': laptop.activo ? 'Activo' : 'Inactivo'
+            'ST': desktop.st,
+            'ST Cargador': desktop.stCargador || '',
+            'Marca': this.getMarcaLabel(desktop.marca),
+            'Modelo': desktop.modelo,
+            'Fecha Adquisición': desktop.fechaAdquisicion,
+            'Sistema': this.getSistemaLabel(desktop.sistema),
+            'Procesador': this.getProcesadorLabel(desktop.procesador),
+            'RAM (GB)': desktop.ram,
+            'Disco (GB)': desktop.capacidadDisco,
+            'Tipo Disco': desktop.tipoDisco.toUpperCase(),
+            'Propiedad': this.getPropiedadLabel(desktop.propiedad),
+            'Usuario Asignado': desktop.usuarioAsignado ? desktop.usuarioAsignado.nombre : 'Sin asignar',
+            'Estado': desktop.activo ? 'Activo' : 'Inactivo'
         }];
 
-        Utils.exportToCSV(data, `Laptop_${laptop.st}.csv`);
+        Utils.exportToCSV(data, `Desktop_${desktop.st}.csv`);
         this.showToast('Datos exportados exitosamente', 'success');
     }
 
@@ -1232,7 +1232,7 @@ class InventarioLaptopController {
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', () => {
-    window.inventarioLaptopController = new InventarioLaptopController();
+    window.inventarioDesktopController = new InventarioDesktopController();
 });
 
-console.log('💻 Inventario Laptop Module Loaded');
+console.log('💻 Inventario Desktop Module Loaded');

@@ -1,20 +1,20 @@
 /* ============================================
-   INVENTARIO-LAPTOP.CSS
-   Estilos específicos del módulo de inventario de laptops
+   INVENTARIO-DESKTOP.CSS
+   Estilos específicos del módulo de inventario de desktops
    ============================================ */
 
 /* ============================================
    PAGE HEADER
    ============================================ */
 
-#inventarioLaptopPage .page-header {
+#inventarioDesktopPage .page-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 2rem;
 }
 
-#inventarioLaptopPage .breadcrumb {
+#inventarioDesktopPage .breadcrumb {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -22,13 +22,13 @@
     color: var(--text-muted);
 }
 
-#inventarioLaptopPage .breadcrumb a {
+#inventarioDesktopPage .breadcrumb a {
     color: var(--primary-color);
     text-decoration: none;
     transition: var(--transition);
 }
 
-#inventarioLaptopPage .breadcrumb a:hover {
+#inventarioDesktopPage .breadcrumb a:hover {
     color: var(--success-color);
 }
 
@@ -36,7 +36,7 @@
    TOOLBAR
    ============================================ */
 
-#inventarioLaptopPage .toolbar {
+#inventarioDesktopPage .toolbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -48,24 +48,24 @@
     box-shadow: var(--shadow-md);
 }
 
-#inventarioLaptopPage .toolbar-left {
+#inventarioDesktopPage .toolbar-left {
     flex: 1;
 }
 
-#inventarioLaptopPage .toolbar-left h2 {
+#inventarioDesktopPage .toolbar-left h2 {
     font-size: 1.5rem;
     font-weight: 700;
     margin: 0 0 0.5rem 0;
     color: var(--text-primary);
 }
 
-#inventarioLaptopPage .item-count {
+#inventarioDesktopPage .item-count {
     font-size: 0.9rem;
     color: var(--text-secondary);
     margin: 0;
 }
 
-#inventarioLaptopPage .toolbar-actions {
+#inventarioDesktopPage .toolbar-actions {
     display: flex;
     gap: 1rem;
     align-items: center;
@@ -75,7 +75,7 @@
    FILTROS
    ============================================ */
 
-#inventarioLaptopPage .filters-container {
+#inventarioDesktopPage .filters-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -84,13 +84,13 @@
     flex-wrap: wrap;
 }
 
-#inventarioLaptopPage .filter-group {
+#inventarioDesktopPage .filter-group {
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
 }
 
-#inventarioLaptopPage .filter-btn {
+#inventarioDesktopPage .filter-btn {
     padding: 0.6rem 1.2rem;
     border: 1px solid var(--border-color);
     background: var(--bg-secondary);
@@ -102,20 +102,20 @@
     font-weight: 500;
 }
 
-#inventarioLaptopPage .filter-btn:hover {
+#inventarioDesktopPage .filter-btn:hover {
     background: var(--bg-tertiary);
     border-color: var(--primary-color);
     color: var(--primary-color);
 }
 
-#inventarioLaptopPage .filter-btn.active {
+#inventarioDesktopPage .filter-btn.active {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     border-color: var(--primary-color);
     color: white;
     box-shadow: var(--glow);
 }
 
-#inventarioLaptopPage .search-filter {
+#inventarioDesktopPage .search-filter {
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -127,17 +127,17 @@
     transition: var(--transition);
 }
 
-#inventarioLaptopPage .search-filter:focus-within {
+#inventarioDesktopPage .search-filter:focus-within {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
 }
 
-#inventarioLaptopPage .search-filter svg {
+#inventarioDesktopPage .search-filter svg {
     color: var(--text-muted);
     flex-shrink: 0;
 }
 
-#inventarioLaptopPage .search-filter input {
+#inventarioDesktopPage .search-filter input {
     flex: 1;
     background: transparent;
     border: none;
@@ -146,7 +146,7 @@
     font-size: 0.9rem;
 }
 
-#inventarioLaptopPage .search-filter input::placeholder {
+#inventarioDesktopPage .search-filter input::placeholder {
     color: var(--text-muted);
 }
 
@@ -569,7 +569,7 @@
    MODALES
    ============================================ */
 
-#laptopModal.modal,
+#desktopModal.modal,
 #assignUserModal.modal,
 #detailModal.modal {
     position: fixed;
@@ -583,13 +583,13 @@
     z-index: 9999;
 }
 
-#laptopModal.modal.show,
+#desktopModal.modal.show,
 #assignUserModal.modal.show,
 #detailModal.modal.show {
     display: flex;
 }
 
-#laptopModal .modal-overlay,
+#desktopModal .modal-overlay,
 #assignUserModal .modal-overlay,
 #detailModal .modal-overlay {
     position: absolute;
@@ -601,7 +601,7 @@
     backdrop-filter: blur(8px);
 }
 
-#laptopModal .modal-container,
+#desktopModal .modal-container,
 #assignUserModal .modal-container {
     position: relative;
     background: var(--bg-secondary);
@@ -612,7 +612,7 @@
     max-height: 90vh;
     overflow-y: auto;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    animation: laptopModalSlideIn 0.3s ease;
+    animation: desktopModalSlideIn 0.3s ease;
     z-index: 10000;
 }
 
@@ -626,11 +626,11 @@
     max-height: 90vh;
     overflow-y: auto;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    animation: laptopModalSlideIn 0.3s ease;
+    animation: desktopModalSlideIn 0.3s ease;
     z-index: 10000;
 }
 
-@keyframes laptopModalSlideIn {
+@keyframes desktopModalSlideIn {
     from {
         opacity: 0;
         transform: translateY(-50px) scale(0.95);
@@ -641,7 +641,7 @@
     }
 }
 
-#laptopModal .modal-header,
+#desktopModal .modal-header,
 #assignUserModal .modal-header,
 #detailModal .modal-header {
     display: flex;
@@ -652,7 +652,7 @@
     background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), transparent);
 }
 
-#laptopModal .modal-title,
+#desktopModal .modal-title,
 #assignUserModal .modal-title,
 #detailModal .modal-title {
     font-size: 1.5rem;
@@ -661,7 +661,7 @@
     margin: 0;
 }
 
-#laptopModal .close-btn,
+#desktopModal .close-btn,
 #assignUserModal .close-btn,
 #detailModal .close-btn {
     width: 36px;
@@ -678,21 +678,21 @@
     font-size: 1.5rem;
 }
 
-#laptopModal .close-btn:hover,
+#desktopModal .close-btn:hover,
 #assignUserModal .close-btn:hover,
 #detailModal .close-btn:hover {
     background: rgba(255, 71, 87, 0.2);
     transform: rotate(90deg);
 }
 
-#laptopModal .modal-body,
+#desktopModal .modal-body,
 #assignUserModal .modal-body,
 #detailModal .modal-body {
     padding: 2rem;
     background: var(--bg-secondary);
 }
 
-#laptopModal .modal-footer,
+#desktopModal .modal-footer,
 #assignUserModal .modal-footer,
 #detailModal .modal-footer {
     display: flex;
@@ -847,7 +847,7 @@
     box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
 }
 
-.laptop-info {
+.desktop-info {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: 8px;
@@ -855,12 +855,12 @@
     margin-bottom: 1.5rem;
 }
 
-.laptop-info p {
+.desktop-info p {
     margin: 0.5rem 0;
     color: var(--text-secondary);
 }
 
-.laptop-info strong {
+.desktop-info strong {
     color: var(--text-primary);
 }
 
@@ -1071,27 +1071,27 @@
    ============================================ */
 
 @media (max-width: 768px) {
-    #inventarioLaptopPage .toolbar {
+    #inventarioDesktopPage .toolbar {
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
     }
 
-    #inventarioLaptopPage .toolbar-actions {
+    #inventarioDesktopPage .toolbar-actions {
         width: 100%;
         flex-direction: column;
     }
 
-    #inventarioLaptopPage .toolbar-actions button {
+    #inventarioDesktopPage .toolbar-actions button {
         width: 100%;
     }
 
-    #inventarioLaptopPage .filters-container {
+    #inventarioDesktopPage .filters-container {
         flex-direction: column;
         align-items: stretch;
     }
 
-    #inventarioLaptopPage .search-filter {
+    #inventarioDesktopPage .search-filter {
         width: 100%;
         min-width: auto;
     }
@@ -1118,11 +1118,11 @@
 }
 
 @media (max-width: 480px) {
-    #inventarioLaptopPage .page-title {
+    #inventarioDesktopPage .page-title {
         font-size: 1.5rem;
     }
 
-    #inventarioLaptopPage .toolbar-left h2 {
+    #inventarioDesktopPage .toolbar-left h2 {
         font-size: 1.2rem;
     }
 

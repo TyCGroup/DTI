@@ -3,7 +3,8 @@
     "allow": [
       "Bash(dir /s /b)",
       "Bash(dir /s /b \"c:\\Users\\Eliud\\OneDrive - Turismo y Convenciones SA de CV\\Escritorio\\DTI\")",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(dir:*)"
     ],
     "deny": [],
     "ask": []
