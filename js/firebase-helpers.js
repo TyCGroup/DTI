@@ -359,6 +359,75 @@ class FirebaseHelper {
         });
     }
 
+    /**
+     * Alias para onCollectionChange (compatibilidad)
+     * @param {string} collection - Nombre de la colección
+     * @param {function} callback - Función a ejecutar en cambios
+     * @param {function|object} errorCallbackOrOptions - Callback de error o opciones
+     * @param {object} options - Opciones de consulta (si segundo param es callback)
+     * @returns {function} - Función para detener el listener
+     */
+    onSnapshot(collection, callback, errorCallbackOrOptions = {}, options = {}) {
+        // Detectar si el tercer parámetro es función (error callback) u objeto (options)
+        let errorCallback = null;
+        let queryOptions = {};
+
+        if (typeof errorCallbackOrOptions === 'function') {
+            errorCallback = errorCallbackOrOptions;
+            queryOptions = options;
+        } else {
+            queryOptions = errorCallbackOrOptions;
+        }
+
+        let query = this.db.collection(collection);
+
+        if (queryOptions.where) {
+            queryOptions.where.forEach(([field, operator, value]) => {
+                query = query.where(field, operator, value);
+            });
+        }
+
+        if (queryOptions.orderBy) {
+            const [field, direction = 'asc'] = queryOptions.orderBy;
+            query = query.orderBy(field, direction);
+        }
+
+        if (queryOptions.limit) {
+            query = query.limit(queryOptions.limit);
+        }
+
+        return query.onSnapshot((snapshot) => {
+            const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            callback(docs);
+        }, (error) => {
+            console.error('Error en listener:', error);
+            if (errorCallback) {
+                errorCallback(error);
+            }
+        });
+    }
+
+    /**
+     * Verificar si existe un documento con una condición where
+     * @param {string} collection - Nombre de la colección
+     * @param {string} field - Campo a verificar
+     * @param {string} operator - Operador de comparación
+     * @param {any} value - Valor a comparar
+     * @returns {Promise<boolean>}
+     */
+    async existsWhere(collection, field, operator, value) {
+        try {
+            const snapshot = await this.db.collection(collection)
+                .where(field, operator, value)
+                .limit(1)
+                .get();
+            return !snapshot.empty;
+        } catch (error) {
+            console.error('Error al verificar existencia con where:', error);
+            return false;
+        }
+    }
+
     // ===== UTILIDADES =====
 
     /**

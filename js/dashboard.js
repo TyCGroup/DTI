@@ -30,7 +30,7 @@ class DashboardController {
     // ===== SETTINGS =====
     loadSettings() {
         const defaultSettings = {
-            theme: 'dark',
+            theme: 'light', // FORZADO A MODO CLARO
             textColor: '#00d4ff',
             accentColor: '#00d4ff',
             soundEnabled: true,
@@ -39,21 +39,28 @@ class DashboardController {
         };
 
         const saved = localStorage.getItem('dashboardSettings');
-        return saved ? { ...defaultSettings, ...JSON.parse(saved) } : defaultSettings;
+        // Siempre forzar modo claro
+        const settings = saved ? { ...defaultSettings, ...JSON.parse(saved) } : defaultSettings;
+        settings.theme = 'light'; // FORZAR SIEMPRE MODO CLARO
+        return settings;
     }
 
     saveSettings() {
+        // Siempre guardar con tema claro
+        this.settings.theme = 'light';
         localStorage.setItem('dashboardSettings', JSON.stringify(this.settings));
-        console.log('💾 Configuración guardada');
+        console.log('💾 Configuración guardada (modo claro forzado)');
     }
 
     applySettings() {
-        // Aplicar tema
-        document.body.classList.toggle('light-theme', this.settings.theme === 'light');
-        
+        // Forzar tema claro siempre
+        document.body.classList.add('light-theme');
+        document.body.classList.remove('dark-theme');
+
         const themeToggle = document.getElementById('themeToggle');
         if (themeToggle) {
-            themeToggle.checked = this.settings.theme === 'light';
+            themeToggle.checked = true; // Siempre activado (modo claro)
+            themeToggle.disabled = true; // Deshabilitar para que no se pueda cambiar
         }
 
         // Aplicar colores
@@ -92,7 +99,7 @@ class DashboardController {
     resetSettings() {
         if (confirm('¿Restablecer toda la configuración a valores predeterminados?')) {
             this.settings = {
-                theme: 'dark',
+                theme: 'light', // FORZADO A MODO CLARO
                 textColor: '#00d4ff',
                 accentColor: '#00d4ff',
                 soundEnabled: true,
@@ -269,11 +276,10 @@ class DashboardController {
     setupSettingsInputs() {
         const themeToggle = document.getElementById('themeToggle');
         if (themeToggle) {
-            themeToggle.addEventListener('change', (e) => {
-                this.settings.theme = e.target.checked ? 'light' : 'dark';
-                document.body.classList.toggle('light-theme', e.target.checked);
-                this.sounds.playClick();
-            });
+            // DESHABILITADO - Modo claro permanente
+            themeToggle.disabled = true;
+            themeToggle.checked = true;
+            // No agregar event listener para evitar cambios
         }
 
         const textColorPicker = document.getElementById('textColorPicker');

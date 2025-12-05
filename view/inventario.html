@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventarios - TyC Group</title>
+    <script src="../js/favicon-loader.js"></script>
+
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <style>
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .category-card {
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-tertiary));
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--glow);
+            border-color: var(--primary-color);
+        }
+
+        .category-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+
+        .category-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .category-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .summary-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .summary-card h3 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <main class="main-content">
+        <div class="page-content">
+            <h1 class="page-title">Gestión de Inventarios</h1>
+            <p class="page-subtitle">Administra el inventario de equipos tecnológicos</p>
+
+            <!-- Resumen General -->
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <h3 id="totalEquipos">0</h3>
+                    <p>Total de Equipos</p>
+                </div>
+                <div class="summary-card">
+                    <h3 id="totalActivos">0</h3>
+                    <p>Equipos Activos</p>
+                </div>
+                <div class="summary-card">
+                    <h3 id="porcentajeActivos">0%</h3>
+                    <p>Porcentaje Activo</p>
+                </div>
+            </div>
+
+            <!-- Categorías de Inventario -->
+            <div class="categories-grid">
+                <!-- Laptops -->
+                <a href="inventario-laptop.html" class="category-card">
+                    <div class="category-icon">💻</div>
+                    <h2>Laptops</h2>
+                    <p style="color: var(--text-secondary); margin: 1rem 0;">Inventario de equipos portátiles</p>
+                    <div class="category-stats">
+                        <div class="stat">
+                            <div class="stat-number" id="laptopsTotal">0</div>
+                            <div class="stat-label">Total</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="laptopsActivos">0</div>
+                            <div class="stat-label">Activos</div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Desktops -->
+                <a href="inventario-desktop.html" class="category-card">
+                    <div class="category-icon">🖥️</div>
+                    <h2>Desktops</h2>
+                    <p style="color: var(--text-secondary); margin: 1rem 0;">Inventario de equipos de escritorio</p>
+                    <div class="category-stats">
+                        <div class="stat">
+                            <div class="stat-number" id="desktopsTotal">0</div>
+                            <div class="stat-label">Total</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="desktopsActivos">0</div>
+                            <div class="stat-label">Activos</div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Periféricos -->
+                <a href="inventario-periferico.html" class="category-card">
+                    <div class="category-icon">⌨️</div>
+                    <h2>Periféricos</h2>
+                    <p style="color: var(--text-secondary); margin: 1rem 0;">Inventario de dispositivos periféricos</p>
+                    <div class="category-stats">
+                        <div class="stat">
+                            <div class="stat-number" id="perifericosTotal">0</div>
+                            <div class="stat-label">Total</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="perifericosActivos">0</div>
+                            <div class="stat-label">Activos</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="../js/auth-module.js"></script>
+    <script src="../js/constants.js"></script>
+    <script src="../js/shared-components.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/firebase-helpers.js"></script>
+    <script src="../js/dashboard.js"></script>
+
+    <script>
+        SharedComponents.initializePage('inventario');
+
+        // Cargar estadísticas
+        async function loadStats() {
+            const fb = getFirebaseHelper();
+
+            try {
+                // Laptops
+                const laptops = await fb.readAll('inventarios_laptops');
+                const laptopsActivos = laptops.filter(l => l.activo).length;
+                document.getElementById('laptopsTotal').textContent = laptops.length;
+                document.getElementById('laptopsActivos').textContent = laptopsActivos;
+
+                // Desktops (cuando exista)
+                try {
+                    const desktops = await fb.readAll('inventarios_desktops');
+                    const desktopsActivos = desktops.filter(d => d.activo).length;
+                    document.getElementById('desktopsTotal').textContent = desktops.length;
+                    document.getElementById('desktopsActivos').textContent = desktopsActivos;
+                } catch (e) {
+                    document.getElementById('desktopsTotal').textContent = '0';
+                    document.getElementById('desktopsActivos').textContent = '0';
+                }
+
+                // Periféricos (cuando exista)
+                try {
+                    const perifericos = await fb.readAll('inventarios_perifericos');
+                    const perifericosActivos = perifericos.filter(p => p.activo).length;
+                    document.getElementById('perifericosTotal').textContent = perifericos.length;
+                    document.getElementById('perifericosActivos').textContent = perifericosActivos;
+                } catch (e) {
+                    document.getElementById('perifericosTotal').textContent = '0';
+                    document.getElementById('perifericosActivos').textContent = '0';
+                }
+
+                // Totales
+                const desktopsTotal = parseInt(document.getElementById('desktopsTotal').textContent) || 0;
+                const desktopsActivos = parseInt(document.getElementById('desktopsActivos').textContent) || 0;
+                const perifericosTotal = parseInt(document.getElementById('perifericosTotal').textContent) || 0;
+                const perifericosActivos = parseInt(document.getElementById('perifericosActivos').textContent) || 0;
+
+                const totalEquipos = laptops.length + desktopsTotal + perifericosTotal;
+                const totalActivos = laptopsActivos + desktopsActivos + perifericosActivos;
+                const porcentaje = totalEquipos > 0 ? Math.round((totalActivos / totalEquipos) * 100) : 0;
+
+                document.getElementById('totalEquipos').textContent = totalEquipos;
+                document.getElementById('totalActivos').textContent = totalActivos;
+                document.getElementById('porcentajeActivos').textContent = porcentaje + '%';
+
+            } catch (error) {
+                console.error('Error cargando estadísticas:', error);
+            }
+        }
+
+        // Esperar autenticación
+        const waitForAuth = setInterval(() => {
+            if (window.dashboard && window.dashboard.auth) {
+                clearInterval(waitForAuth);
+                loadStats();
+            }
+        }, 100);
+    </script>
+</body>
+</html>

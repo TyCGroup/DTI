@@ -1,40 +1,44 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
 
 /* ===== VARIABLES CSS ===== */
+/* MODO CLARO PERMANENTE - Variables por defecto en modo claro */
 :root {
     --primary-color: #00d4ff;
     --secondary-color: #0066cc;
     --success-color: #00ff88;
     --danger-color: #ff4757;
     --warning-color: #ffa502;
-    
-    --bg-primary: #0a0e27;
-    --bg-secondary: #1a1f3a;
-    --bg-tertiary: #252b48;
-    --bg-card: #2d3452;
-    
-    --text-primary: #ffffff;
-    --text-secondary: #b3b9d1;
-    --text-muted: #6c7293;
-    
+
+    /* Colores en modo claro (anteriormente solo en body.light-theme) */
+    --bg-primary: #f5f7fa;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #e8ecf1;
+    --bg-card: #ffffff;
+    --card-bg: #ffffff;
+
+    --text-primary: #1a1f3a;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
+
     --sidebar-width: 260px;
     --header-height: 70px;
-    
-    --border-color: rgba(0, 212, 255, 0.2);
-    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 5px 20px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
+
+    --border-color: rgba(0, 212, 255, 0.3);
+    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 5px 20px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.2);
     --glow: 0 0 20px rgba(0, 212, 255, 0.5);
-    
+
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Light Theme */
+/* Light Theme - Mantenido para compatibilidad pero ahora redundante */
 body.light-theme {
     --bg-primary: #f5f7fa;
     --bg-secondary: #ffffff;
     --bg-tertiary: #e8ecf1;
     --bg-card: #ffffff;
+    --card-bg: #ffffff;
     --text-primary: #1a1f3a;
     --text-secondary: #4a5568;
     --text-muted: #718096;
@@ -162,6 +166,61 @@ body {
     width: 22px;
     height: 22px;
     stroke: currentColor;
+}
+
+/* Submenú */
+.nav-item-with-submenu {
+    position: relative;
+}
+
+.nav-item-with-submenu .nav-item {
+    position: relative;
+}
+
+.chevron-icon {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.nav-item-with-submenu.active .chevron-icon {
+    transform: rotate(180deg);
+}
+
+.submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.submenu.show {
+    max-height: 500px;
+}
+
+.submenu-item {
+    display: block;
+    padding: 0.7rem 1.5rem 0.7rem 3.5rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: var(--transition);
+    font-size: 0.9rem;
+    border-left: 3px solid transparent;
+}
+
+.submenu-item:hover {
+    background: rgba(0, 212, 255, 0.1);
+    color: var(--primary-color);
+    border-left-color: var(--primary-color);
+}
+
+.submenu-item.active {
+    background: rgba(0, 212, 255, 0.15);
+    color: var(--primary-color);
+    border-left-color: var(--primary-color);
+    font-weight: 600;
 }
 
 /* Sidebar Bottom */
@@ -457,8 +516,9 @@ body {
     stroke: white;
 }
 
-/* ===== MODALS ===== */
-.modal {
+/* ===== MODALS - SOLO PARA AJUSTES Y LOGOUT ===== */
+#settingsModal.modal,
+#logoutModal.modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -475,12 +535,14 @@ body {
     z-index: 1000;
 }
 
-.modal.show {
+#settingsModal.modal.show,
+#logoutModal.modal.show {
     opacity: 1;
     pointer-events: all;
 }
 
-.modal-content {
+#settingsModal .modal-content,
+#logoutModal .modal-content {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: 20px;
@@ -493,15 +555,17 @@ body {
     transition: var(--transition);
 }
 
-.modal.show .modal-content {
+#settingsModal.modal.show .modal-content,
+#logoutModal.modal.show .modal-content {
     transform: scale(1);
 }
 
-.modal-content.small {
+#logoutModal .modal-content.small {
     max-width: 400px;
 }
 
-.modal-header {
+#settingsModal .modal-header,
+#logoutModal .modal-header {
     padding: 1.5rem 2rem;
     border-bottom: 1px solid var(--border-color);
     display: flex;
@@ -509,12 +573,14 @@ body {
     justify-content: space-between;
 }
 
-.modal-header h2 {
+#settingsModal .modal-header h2,
+#logoutModal .modal-header h2 {
     font-size: 1.5rem;
     color: var(--primary-color);
 }
 
-.close-btn {
+#settingsModal .close-btn,
+#logoutModal .close-btn {
     background: none;
     border: none;
     font-size: 2rem;
@@ -524,15 +590,18 @@ body {
     line-height: 1;
 }
 
-.close-btn:hover {
+#settingsModal .close-btn:hover,
+#logoutModal .close-btn:hover {
     color: var(--danger-color);
 }
 
-.modal-body {
+#settingsModal .modal-body,
+#logoutModal .modal-body {
     padding: 2rem;
 }
 
-.modal-footer {
+#settingsModal .modal-footer,
+#logoutModal .modal-footer {
     padding: 1.5rem 2rem;
     border-top: 1px solid var(--border-color);
     display: flex;
@@ -540,8 +609,8 @@ body {
     justify-content: flex-end;
 }
 
-/* Setting Items */
-.setting-item {
+/* Setting Items - SOLO PARA MODAL DE AJUSTES */
+#settingsModal .setting-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -551,32 +620,32 @@ body {
     margin-bottom: 1rem;
 }
 
-.setting-info h3 {
+#settingsModal .setting-info h3 {
     font-size: 1rem;
     color: var(--text-primary);
     margin-bottom: 0.25rem;
 }
 
-.setting-info p {
+#settingsModal .setting-info p {
     font-size: 0.85rem;
     color: var(--text-muted);
 }
 
-/* Toggle Switch */
-.toggle-switch {
+/* Toggle Switch - SOLO PARA MODAL DE AJUSTES */
+#settingsModal .toggle-switch {
     position: relative;
     width: 60px;
     height: 30px;
     cursor: pointer;
 }
 
-.toggle-switch input {
+#settingsModal .toggle-switch input {
     opacity: 0;
     width: 0;
     height: 0;
 }
 
-.toggle-slider {
+#settingsModal .toggle-slider {
     position: absolute;
     top: 0;
     left: 0;
@@ -587,7 +656,7 @@ body {
     transition: var(--transition);
 }
 
-.toggle-slider::before {
+#settingsModal .toggle-slider::before {
     content: '';
     position: absolute;
     height: 22px;
@@ -599,17 +668,26 @@ body {
     transition: var(--transition);
 }
 
-.toggle-switch input:checked + .toggle-slider {
+#settingsModal .toggle-switch input:checked + .toggle-slider {
     background: var(--primary-color);
 }
 
-.toggle-switch input:checked + .toggle-slider::before {
+#settingsModal .toggle-switch input:checked + .toggle-slider::before {
     transform: translateX(30px);
     background: white;
 }
 
-/* Color Picker */
-.color-picker {
+/* Toggle switch disabled state */
+#settingsModal .toggle-switch input:disabled + .toggle-slider {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#settingsModal .toggle-switch input:disabled {
+    cursor: not-allowed;
+}
+
+#settingsModal .color-picker {
     width: 60px;
     height: 40px;
     border: 2px solid var(--border-color);
@@ -618,12 +696,12 @@ body {
     transition: var(--transition);
 }
 
-.color-picker:hover {
+#settingsModal .color-picker:hover {
     border-color: var(--primary-color);
 }
 
-/* Volume Slider */
-.volume-slider {
+/* Volume Slider - SOLO PARA MODAL DE AJUSTES */
+#settingsModal .volume-slider {
     width: 150px;
     height: 6px;
     border-radius: 10px;
@@ -632,7 +710,7 @@ body {
     -webkit-appearance: none;
 }
 
-.volume-slider::-webkit-slider-thumb {
+#settingsModal .volume-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 18px;
     height: 18px;
@@ -720,132 +798,7 @@ body {
         grid-template-columns: 1fr;
     }
 }
-/* ===== MODAL GENÉRICO ===== */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
-    z-index: 9999;
-    justify-content: center;
-    align-items: center;
-}
-
-.modal.show {
-    display: flex;
-    animation: fadeIn 0.3s ease-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-.modal-content.small {
-    width: 90%;
-    max-width: 400px;
-}
-
-.modal-content.medium {
-    width: 90%;
-    max-width: 600px;
-}
-
-.modal-content.large {
-    width: 90%;
-    max-width: 900px;
-}
-
-.modal-content {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    max-height: 90vh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    animation: slideUp 0.3s ease-out;
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.modal-header {
-    padding: 1.5rem;
-    border-bottom: 1px solid #e5e7eb;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.modal-title {
-    margin: 0;
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #111827;
-}
-
-.modal-body {
-    padding: 1.5rem;
-    overflow-y: auto;
-    flex: 1;
-}
-
-.modal-footer {
-    padding: 1.5rem;
-    border-top: 1px solid #e5e7eb;
-    display: flex;
-    gap: 0.75rem;
-    justify-content: flex-end;
-}
-
-/* Estilos para los botones dentro del modal */
-.modal-footer .btn,
-.modal-footer .btn-primary,
-.modal-footer .btn-secondary {
-    padding: 0.625rem 1.25rem;
-    border-radius: 8px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.modal-footer .btn-primary {
-    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-    color: white;
-    border: none;
-}
-
-.modal-footer .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
-}
-
-.modal-footer .btn-secondary {
-    background: #f3f4f6;
-    color: #374151;
-    border: 1px solid #e5e7eb;
-}
-
-.modal-footer .btn-secondary:hover {
-    background: #e5e7eb;
-}
+/* ===== MODAL STYLES REMOVED ===== */
+/* Generic modal styles removed to prevent conflicts */
+/* Each module now has its own scoped modal styles */
+/* Settings and logout modals use #settingsModal and #logoutModal specific styles above */

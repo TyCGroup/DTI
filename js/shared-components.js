@@ -13,7 +13,17 @@ class SharedComponents {
     static getSidebarHTML(activePage = 'dashboard') {
         const menuItems = [
             { id: 'dashboard', name: 'Inicio', icon: 'home', url: 'dashboard.html' },
-            { id: 'inventario', name: 'Inventario', icon: 'grid', url: 'inventario.html' },
+            {
+                id: 'inventario',
+                name: 'Inventarios',
+                icon: 'grid',
+                url: 'inventario.html',
+                submenu: [
+                    { id: 'inventario-laptop', name: 'Laptops', url: 'inventario-laptop.html' },
+                    { id: 'inventario-desktop', name: 'Desktops', url: 'inventario-desktop.html' },
+                    { id: 'inventario-periferico', name: 'Periféricos', url: 'inventario-periferico.html' }
+                ]
+            },
             { id: 'documentos', name: 'Documentos', icon: 'file', url: 'documentos.html' },
             { id: 'bitacora', name: 'Bitácora', icon: 'book', url: 'bitacora.html' },
             { id: 'historial', name: 'Historial de Tareas', icon: 'clock', url: 'historial.html' },
@@ -35,14 +45,45 @@ class SharedComponents {
             admin: '<path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>'
         };
 
-        const navItems = menuItems.map(item => `
-            <a href="${item.url}" class="nav-item ${activePage === item.id ? 'active' : ''}">
-                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    ${icons[item.icon]}
-                </svg>
-                <span>${item.name}</span>
-            </a>
-        `).join('');
+        const navItems = menuItems.map(item => {
+            const isActive = activePage === item.id || (item.submenu && item.submenu.some(sub => sub.id === activePage));
+
+            if (item.submenu) {
+                // Item con submenú
+                const submenuItems = item.submenu.map(sub => `
+                    <a href="${sub.url}" class="submenu-item ${activePage === sub.id ? 'active' : ''}">
+                        <span>${sub.name}</span>
+                    </a>
+                `).join('');
+
+                return `
+                    <div class="nav-item-with-submenu ${isActive ? 'active' : ''}">
+                        <a href="${item.url}" class="nav-item ${isActive ? 'active' : ''}">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                ${icons[item.icon]}
+                            </svg>
+                            <span>${item.name}</span>
+                            <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </a>
+                        <div class="submenu ${isActive ? 'show' : ''}">
+                            ${submenuItems}
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Item normal sin submenú
+                return `
+                    <a href="${item.url}" class="nav-item ${isActive ? 'active' : ''}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            ${icons[item.icon]}
+                        </svg>
+                        <span>${item.name}</span>
+                    </a>
+                `;
+            }
+        }).join('');
 
         return `
             <aside class="sidebar" id="sidebar">
@@ -106,17 +147,6 @@ class SharedComponents {
                         <button class="close-btn" id="closeSettings">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <h3>Modo de Apariencia</h3>
-                                <p>Cambiar entre modo claro y oscuro</p>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="themeToggle">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-
                         <div class="setting-item">
                             <div class="setting-info">
                                 <h3>Color de Texto Principal</h3>
@@ -352,25 +382,45 @@ class SharedComponents {
     // ===== INICIALIZAR COMPONENTES EN UNA PÁGINA (MEJORADO) =====
     static initializePage(activePage = 'dashboard') {
         console.log(`🎨 Inicializando componentes para: ${activePage}`);
-        
+
         // 1. Insertar sidebar al inicio del body
         document.body.insertAdjacentHTML('afterbegin', this.getSidebarHTML(activePage));
-        
+
         // 2. Buscar el main-content e insertar header al inicio
         const mainContent = document.querySelector('.main-content');
         if (mainContent) {
             mainContent.insertAdjacentHTML('afterbegin', this.getHeaderHTML());
         }
-        
+
         // 3. Insertar modales al final del body
         document.body.insertAdjacentHTML('beforeend', this.getSettingsModalHTML());
         document.body.insertAdjacentHTML('beforeend', this.getLogoutModalHTML());
         document.body.insertAdjacentHTML('beforeend', this.createLoadingOverlay());
-        
+
         // 4. Insertar scroll to top button
         document.body.insertAdjacentHTML('beforeend', this.getScrollTopButtonHTML());
-        
+
+        // 5. Inicializar interactividad del submenú
+        this.initSubmenuToggle();
+
         console.log(`✅ Componentes compartidos inicializados para: ${activePage}`);
+    }
+
+    // ===== TOGGLE SUBMENÚ =====
+    static initSubmenuToggle() {
+        const submenuParents = document.querySelectorAll('.nav-item-with-submenu > .nav-item');
+
+        submenuParents.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const parent = item.parentElement;
+                const submenu = parent.querySelector('.submenu');
+
+                // Toggle active class
+                parent.classList.toggle('active');
+                submenu.classList.toggle('show');
+            });
+        });
     }
 }
 

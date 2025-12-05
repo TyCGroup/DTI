@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario de Laptops - TyC Group</title>
+    <script src="../js/favicon-loader.js"></script>
+
+    <!-- Estilos base (OBLIGATORIO) -->
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <!-- Estilos específicos -->
+    <link rel="stylesheet" href="../css/inventario-laptop.css">
+</head>
+<body>
+    <!-- Sidebar y Header se insertan automáticamente -->
+
+    <main class="main-content">
+        <div class="page-content" id="inventarioLaptopPage">
+            <!-- Header -->
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Inventario de Laptops</h1>
+                    <p class="page-subtitle">Gestión completa del inventario de laptops</p>
+                </div>
+                <div class="breadcrumb">
+                    <a href="inventario.html">Inventarios</a>
+                    <span>/</span>
+                    <span>Laptops</span>
+                </div>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <h2>Inventario de Laptops</h2>
+                    <p id="itemCount" class="item-count">0 laptops</p>
+                </div>
+
+                <div class="toolbar-actions">
+                    <button class="btn btn-secondary" id="exportBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        Exportar
+                    </button>
+                    <button class="btn btn-primary" id="addLaptopBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Nueva Laptop
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filtros -->
+            <div class="filters-container">
+                <div class="filter-group">
+                    <button class="filter-btn active" data-filter="all">Todos</button>
+                    <button class="filter-btn" data-filter="activo">Activos</button>
+                    <button class="filter-btn" data-filter="inactivo">Inactivos</button>
+                </div>
+
+                <div class="search-filter">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    <input type="text" id="searchFilter" placeholder="Buscar por ST, marca, modelo, usuario...">
+                </div>
+            </div>
+
+            <!-- Tabla dinámica -->
+            <div id="tableContainer"></div>
+
+            <!-- Loading Overlay -->
+            <div id="loadingOverlay" class="loading-overlay">
+                <div class="spinner"></div>
+                <p>Cargando inventario...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Agregar/Editar Laptop -->
+    <div class="modal" id="laptopModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Nueva Laptop</h2>
+                <button class="close-btn" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="laptopForm">
+                    <!-- INFORMACIÓN BÁSICA -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Información Básica</h3>
+                        <div class="form-section-content">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="st">
+                                    ST (Service Tag) <span class="required">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    class="form-input"
+                                    id="st"
+                                    name="st"
+                                    placeholder="L-12345"
+                                    required
+                                    maxlength="20"
+                                >
+                                <span class="form-error" id="stError"></span>
+                                <span class="form-hint">Ejemplo: L-12345 (único, no repetible)</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="stCargador">ST Cargador</label>
+                                <input
+                                    type="text"
+                                    class="form-input"
+                                    id="stCargador"
+                                    name="stCargador"
+                                    placeholder="C-54321"
+                                    maxlength="20"
+                                >
+                                <span class="form-error"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="marca">
+                                    Marca <span class="required">*</span>
+                                </label>
+                                <select class="form-select" id="marca" name="marca" required>
+                                    <option value="">Selecciona una marca</option>
+                                    <option value="dell">Dell</option>
+                                    <option value="hp">HP</option>
+                                    <option value="lenovo">Lenovo</option>
+                                    <option value="asus">Asus</option>
+                                    <option value="apple">Apple</option>
+                                    <option value="otra">Otra</option>
+                                </select>
+                                <span class="form-error"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="modelo">
+                                    Modelo <span class="required">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    class="form-input"
+                                    id="modelo"
+                                    name="modelo"
+                                    placeholder="Latitude 5420"
+                                    required
+                                >
+                                <span class="form-error"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="fechaAdquisicion">
+                                    Fecha de Adquisición <span class="required">*</span>
+                                </label>
+                                <input
+                                    type="date"
+                                    class="form-input"
+                                    id="fechaAdquisicion"
+                                    name="fechaAdquisicion"
+                                    required
+                                >
+                                <span class="form-error"></span>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- SISTEMA Y HARDWARE -->
+                    <div class="form-section collapsed">
+                        <h3 class="form-section-title">Sistema y Hardware</h3>
+                        <div class="form-section-content">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="sistema">
+                                    Sistema Operativo <span class="required">*</span>
+                                </label>
+                                <select class="form-select" id="sistema" name="sistema" required>
+                                    <option value="">Selecciona un sistema</option>
+                                    <option value="windows11">Windows 11</option>
+                                    <option value="windows10">Windows 10</option>
+                                    <option value="sequoia">macOS Sequoia</option>
+                                    <option value="sonoma">macOS Sonoma</option>
+                                    <option value="ventura">macOS Ventura</option>
+                                    <option value="highsierra">macOS High Sierra</option>
+                                </select>
+                                <span class="form-error"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="procesador">
+                                    Procesador <span class="required">*</span>
+                                </label>
+                                <select class="form-select" id="procesador" name="procesador" required>
+                                    <option value="">Selecciona procesador</option>
+                                    <option value="i3">Intel Core i3</option>
+                                    <option value="i5">Intel Core i5</option>
+                                    <option value="i7">Intel Core i7</option>
+                                </select>
+                                <span class="form-error"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="ram">
+                                    RAM <span class="required">*</span>
+                                </label>
+                                <select class="form-select" id="ram" name="ram" required>
+                                    <option value="">Selecciona RAM</option>
+                                    <option value="8">8 GB</option>
+                                    <option value="12">12 GB</option>
+                                    <option value="16">16 GB</option>
+                                </select>
+                                <span class="form-error"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="capacidadDisco">
+                                    Capacidad de Disco <span class="required">*</span>
+                                </label>
+                                <select class="form-select" id="capacidadDisco" name="capacidadDisco" required>
+                                    <option value="">Selecciona capacidad</option>
+                                    <option value="240">240 GB</option>
+                                    <option value="480">480 GB</option>
+                                    <option value="1000">1000 GB</option>
+                                </select>
+                                <span class="form-error"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="tipoDisco">
+                                    Tipo de Disco <span class="required">*</span>
+                                </label>
+                                <select class="form-select" id="tipoDisco" name="tipoDisco" required>
+                                    <option value="">Selecciona tipo</option>
+                                    <option value="ssd">SSD</option>
+                                    <option value="hdd">HDD</option>
+                                </select>
+                                <span class="form-error"></span>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- PROPIEDAD Y ASIGNACIÓN -->
+                    <div class="form-section collapsed">
+                        <h3 class="form-section-title">Propiedad y Asignación</h3>
+                        <div class="form-section-content">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="propiedad">
+                                    Propiedad <span class="required">*</span>
+                                </label>
+                                <select class="form-select" id="propiedad" name="propiedad" required>
+                                    <option value="">Selecciona tipo de propiedad</option>
+                                    <option value="arrendamiento">Arrendamiento</option>
+                                    <option value="usuario">Usuario</option>
+                                    <option value="renta">Renta</option>
+                                    <option value="propiedadtyc">Propiedad T&C</option>
+                                </select>
+                                <span class="form-error"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="empleadoAsignado">Empleado Asignado (opcional)</label>
+                                <div class="autocomplete-container">
+                                    <input
+                                        type="text"
+                                        class="form-input"
+                                        id="empleadoAsignado"
+                                        name="empleadoAsignado"
+                                        placeholder="Buscar empleado..."
+                                        autocomplete="off"
+                                    >
+                                    <div class="autocomplete-results" id="autocompleteEmpleados"></div>
+                                </div>
+                                <input type="hidden" id="empleadoAsignadoId" name="empleadoAsignadoId">
+                                <span class="form-hint">Escribe para buscar empleados</span>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- ESTADO DEL EQUIPO -->
+                    <div class="form-section collapsed">
+                        <h3 class="form-section-title">Estado del Equipo</h3>
+                        <div class="form-section-content">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Estado</label>
+                                <div class="toggle-container">
+                                    <input type="checkbox" id="activoToggle" name="activo" checked>
+                                    <label for="activoToggle" class="toggle-label">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span class="toggle-text" id="toggleText">Activo</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campos condicionales si está inactivo -->
+                        <div id="inactiveFields" style="display: none;">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="categoriaInactivo">
+                                        Categoría <span class="required">*</span>
+                                    </label>
+                                    <select class="form-select" id="categoriaInactivo" name="categoriaInactivo">
+                                        <option value="">Selecciona categoría</option>
+                                        <option value="falla">Falla</option>
+                                        <option value="robo">Robo</option>
+                                        <option value="otro">Otro</option>
+                                    </select>
+                                    <span class="form-error"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-row" id="motivoOtroContainer" style="display: none;">
+                                <div class="form-group">
+                                    <label class="form-label" for="motivoInactivo">
+                                        Motivo (especifica) <span class="required">*</span>
+                                    </label>
+                                    <textarea
+                                        class="form-textarea"
+                                        id="motivoInactivo"
+                                        name="motivoInactivo"
+                                        rows="3"
+                                        placeholder="Describe el motivo..."
+                                        maxlength="500"
+                                    ></textarea>
+                                    <span class="form-error"></span>
+                                    <span class="form-hint">Mínimo 10 caracteres</span>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelBtn">Cancelar</button>
+                <button class="btn btn-primary" id="saveBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                        <polyline points="17 21 17 13 7 13 7 21"/>
+                        <polyline points="7 3 7 8 15 8"/>
+                    </svg>
+                    Guardar Laptop
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Asignar Usuario -->
+    <div class="modal" id="assignUserModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">Asignar Usuario a Laptop</h2>
+                <button class="close-btn" id="closeAssignModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="laptop-info">
+                    <p><strong>Laptop:</strong> <span id="assignLaptopInfo"></span></p>
+                    <p><strong>Usuario actual:</strong> <span id="assignCurrentUser"></span></p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="searchUserInput">Buscar nuevo usuario</label>
+                    <div class="autocomplete-container">
+                        <input
+                            type="text"
+                            class="form-input"
+                            id="searchUserInput"
+                            placeholder="Escribe para buscar..."
+                            autocomplete="off"
+                        >
+                        <div class="autocomplete-results" id="assignAutocompleteResults"></div>
+                    </div>
+                    <input type="hidden" id="selectedUserId">
+                </div>
+
+                <div class="info-message">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="16" x2="12" y2="12"/>
+                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                    </svg>
+                    Este cambio se guardará en el historial de asignaciones
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelAssignBtn">Cancelar</button>
+                <button class="btn btn-primary" id="confirmAssignBtn" disabled>Asignar Usuario</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Vista de Concentrado -->
+    <div class="modal modal-large" id="detailModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title" id="detailModalTitle">Detalles Completos</h2>
+                <button class="close-btn" id="closeDetailModalBtn">&times;</button>
+            </div>
+            <div class="modal-body" id="detailModalBody">
+                <!-- Contenido dinámico -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="downloadExcelBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Descargar Excel
+                </button>
+                <button class="btn btn-primary" id="editFromDetailBtn">Editar Equipo</button>
+                <button class="btn btn-secondary" id="closeDetailBtn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS (ORDEN IMPORTANTE) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="../js/auth-module.js"></script>
+    <script src="../js/constants.js"></script>
+    <script src="../js/shared-components.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/form-validator.js"></script>
+    <script src="../js/firebase-helpers.js"></script>
+    <script src="../js/dashboard.js"></script>
+
+    <!-- Módulo específico -->
+    <script src="../js/inventario-laptop.js"></script>
+
+    <!-- Línea mágica -->
+    <script>
+        SharedComponents.initializePage('inventario-laptop');
+    </script>
+</body>
+</html>

@@ -34,24 +34,45 @@ const CONFIG = {
     },
 
     PERMISSIONS: {
-        // Inventario
+        // Inventario General
         VIEW_INVENTORY: 'view_inventory',
         CREATE_INVENTORY: 'create_inventory',
         EDIT_INVENTORY: 'edit_inventory',
         DELETE_INVENTORY: 'delete_inventory',
         EXPORT_INVENTORY: 'export_inventory',
-        
+
+        // Inventario Laptops
+        VIEW_LAPTOP_INVENTORY: 'view_laptop_inventory',
+        CREATE_LAPTOP: 'create_laptop',
+        EDIT_LAPTOP: 'edit_laptop',
+        DELETE_LAPTOP: 'delete_laptop',
+        ASSIGN_USER_LAPTOP: 'assign_user_laptop',
+        VIEW_LAPTOP_HISTORY: 'view_laptop_history',
+        EXPORT_LAPTOP_INVENTORY: 'export_laptop_inventory',
+
+        // Inventario Desktops
+        VIEW_DESKTOP_INVENTORY: 'view_desktop_inventory',
+        CREATE_DESKTOP: 'create_desktop',
+        EDIT_DESKTOP: 'edit_desktop',
+        DELETE_DESKTOP: 'delete_desktop',
+
+        // Inventario Periféricos
+        VIEW_PERIPHERAL_INVENTORY: 'view_peripheral_inventory',
+        CREATE_PERIPHERAL: 'create_peripheral',
+        EDIT_PERIPHERAL: 'edit_peripheral',
+        DELETE_PERIPHERAL: 'delete_peripheral',
+
         // Documentos
         VIEW_DOCUMENTS: 'view_documents',
         UPLOAD_DOCUMENTS: 'upload_documents',
         DELETE_DOCUMENTS: 'delete_documents',
-        
+
         // Usuarios
         VIEW_USERS: 'view_users',
         CREATE_USERS: 'create_users',
         EDIT_USERS: 'edit_users',
         DELETE_USERS: 'delete_users',
-        
+
         // Configuración
         MANAGE_SETTINGS: 'manage_settings',
         VIEW_LOGS: 'view_logs',
@@ -62,20 +83,28 @@ const CONFIG = {
     ROLE_PERMISSIONS: {
         SuperAdmin: [
             'view_inventory', 'create_inventory', 'edit_inventory', 'delete_inventory', 'export_inventory',
+            'view_laptop_inventory', 'create_laptop', 'edit_laptop', 'delete_laptop', 'assign_user_laptop', 'view_laptop_history', 'export_laptop_inventory',
+            'view_desktop_inventory', 'create_desktop', 'edit_desktop', 'delete_desktop',
+            'view_peripheral_inventory', 'create_peripheral', 'edit_peripheral', 'delete_peripheral',
             'view_documents', 'upload_documents', 'delete_documents',
             'view_users', 'create_users', 'edit_users', 'delete_users',
             'manage_settings', 'view_logs', 'manage_backups'
         ],
         Admin: [
             'view_inventory', 'create_inventory', 'edit_inventory', 'export_inventory',
+            'view_laptop_inventory', 'create_laptop', 'edit_laptop', 'assign_user_laptop', 'view_laptop_history', 'export_laptop_inventory',
+            'view_desktop_inventory', 'create_desktop', 'edit_desktop',
+            'view_peripheral_inventory', 'create_peripheral', 'edit_peripheral',
             'view_documents', 'upload_documents',
             'view_users', 'manage_settings'
         ],
         Usuario: [
-            'view_inventory', 'view_documents'
+            'view_inventory', 'view_laptop_inventory', 'view_desktop_inventory', 'view_peripheral_inventory',
+            'view_documents', 'view_laptop_history'
         ],
         Becario: [
-            'view_inventory', 'view_documents'
+            'view_inventory', 'view_laptop_inventory', 'view_desktop_inventory', 'view_peripheral_inventory',
+            'view_documents'
         ]
     },
 
@@ -88,7 +117,11 @@ const CONFIG = {
         TASKS: 'tareas',
         BACKUPS: 'respaldos',
         MAINTENANCE: 'mantenimiento',
-        SETTINGS: 'configuracion'
+        SETTINGS: 'configuracion',
+        // Inventarios
+        INVENTORY_LAPTOPS: 'inventarios_laptops',
+        INVENTORY_DESKTOPS: 'inventarios_desktops',
+        INVENTORY_PERIPHERALS: 'inventarios_perifericos'
     },
 
     // ===== ESTADOS =====
